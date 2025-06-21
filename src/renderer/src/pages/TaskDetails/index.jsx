@@ -41,15 +41,11 @@ const TaskDetails = () => {
   const [analyzingAll, setAnalyzingAll] = useState(false);
   const [selectedTask, setSelectedTask] = useState(0);
   const [TaskModule, setTaskModule] = useState(null);
-
-  /* ▼ dropdown state for “Download All” ▼ */
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
-  /* ▲-----------------------------------▲ */
 
   const navigate = useNavigate();
 
-  /* close the dropdown on outside-click */
   useEffect(() => {
     const handleClickOutside = e => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -136,7 +132,7 @@ const TaskDetails = () => {
       .map(w => w.toLowerCase())
       .join('_');
 
-    const apiURL = `http://localhost:8000/api/${sanitizedTaskName}/`;
+    const apiURL = `http://localhost:8000/api/${sanitizedTaskName}/?id=${videoId}`;
     const res = await fetch(apiURL, { method: 'POST', body: form });
     if (!res.ok) throw new Error(`${name} failed with status ${res.status}`);
 
