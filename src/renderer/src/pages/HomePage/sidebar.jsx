@@ -1,5 +1,5 @@
 // src/pages/HomePage/sidebar.jsx
-import { Folder, HelpCircle, Settings as Cog } from 'lucide-react'; // or bootstrap-icons
+import { Folder, HelpCircle, Settings as Cog } from 'lucide-react';
 import clsx from 'clsx';
 
 const buttons = [

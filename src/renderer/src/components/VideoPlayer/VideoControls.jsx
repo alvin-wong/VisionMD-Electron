@@ -1,5 +1,6 @@
-import { Pause, PlayArrow } from '@mui/icons-material';
 import React, { useEffect } from 'react';
+import Pause from '@mui/icons-material/Pause';
+import PlayArrow from '@mui/icons-material/PlayArrow';
 import Tooltip from '@mui/material/Tooltip';
 
 const VideoControls = ({ videoRef, isPlaying, fps }) => {

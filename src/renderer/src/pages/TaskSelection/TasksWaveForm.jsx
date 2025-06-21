@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import WaveSurfer from 'wavesurfer.js';
 import RegionsPlugin from 'wavesurfer.js/plugins/regions';
 import HoverPlugin from 'wavesurfer.js/plugins/hover';
-import { Slider } from '@mui/material';
+import Slider from '@mui/material/Slider';
 import debounce from 'lodash/debounce';
 
 const TasksWaveForm = ({

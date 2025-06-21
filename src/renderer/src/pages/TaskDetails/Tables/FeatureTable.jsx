@@ -1,5 +1,7 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { CloudDownload, ArrowDropDown } from '@mui/icons-material';
+import CloudDownload from '@mui/icons-material/CloudDownload';
+import ArrowDropDown from '@mui/icons-material/ArrowDropDown';
+
 
 const FeatureTable = ({ tasks, selectedTaskIndex, fileName }) => {
   const [open, setOpen] = useState(false);

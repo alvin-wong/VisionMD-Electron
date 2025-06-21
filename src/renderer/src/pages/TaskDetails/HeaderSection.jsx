@@ -1,8 +1,8 @@
 //src/pages/TaskDetails/HeaderSection.jsx
-import { ArrowBack } from '@mui/icons-material';
+import ArrowBack from '@mui/icons-material/ArrowBack';
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
-import { Typography } from '@mui/material';
+import Typography from '@mui/material/Typography';
 
 
 const HeaderSection = ({ title, isVideoReady }) => {

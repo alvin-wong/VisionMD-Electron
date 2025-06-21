@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useSyncExternalStore } from 'react';
-import Creatable from 'react-select/creatable';
-import { IconButton, Collapse} from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import Collapse from '@mui/material/Collapse';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import TouchApp from '@mui/icons-material/TouchApp';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';

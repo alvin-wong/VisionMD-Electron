@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { PlayCircleOutline } from '@mui/icons-material';
+import PlayCircleOutline from '@mui/icons-material/PlayCircleOutline';
 import Button from '@mui/material/Button';
 import JSONUploadDialog from './SubjectJSONUploadDialog';
+
 
 const PersonRow = ({ person, onPlay, onToggleSubject }) => (
   <li

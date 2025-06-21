@@ -1,8 +1,7 @@
 // src/components/commons/VideoPlayer/VideoPlayer.jsx
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import VideoControls from './VideoControls';
-import { Button, Slider, IconButton } from '@mui/material';
-import { Close } from '@mui/icons-material';
+import Slider from '@mui/material/Slider';
 import VideoDrawer from './VideoDrawer';
 import InteractiveOverlays from './InteractiveOverlays';
 

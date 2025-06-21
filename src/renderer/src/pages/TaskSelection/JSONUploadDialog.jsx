@@ -5,10 +5,11 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { CircularProgress, Input, Typography } from '@mui/material';
-import { useState } from 'react';
+import Input from '@mui/material/Input';
+import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import { useState } from 'react';
 
 export default function JSONUploadDialog({
   dialogOpen,

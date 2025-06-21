@@ -6,16 +6,19 @@ import React, {
   useState,
   Suspense,
 } from 'react';
+
+import { useNavigate } from 'react-router-dom';
+
 import VideoPlayer from '../../components/VideoPlayer/VideoPlayer';
 import { VideoContext } from '../../contexts/VideoContext';
 import HeaderSection from './HeaderSection';
 import JSONUploadDialog from './JSONUploadDialog';
-import { useNavigate } from 'react-router-dom';
 
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { CircularProgress } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
+
 
 const TaskDetails = () => {
   const {

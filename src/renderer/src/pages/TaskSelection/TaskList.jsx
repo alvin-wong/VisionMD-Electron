@@ -1,5 +1,4 @@
 //src/pages/TaskSelection/TaskList.jsx
-import { RestartAlt, TouchApp } from '@mui/icons-material';
 import { useState } from 'react';
 import { taskOptions } from '../../constants/taskOptions'; 
 import Default from './Tasks/default'

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Plot from 'react-plotly.js';
-import { CloudDownload } from '@mui/icons-material';
+import  CloudDownload from '@mui/icons-material/CloudDownload';
 import Button from '@mui/material/Button';
 
 const ScatterPlot = ({ tasks, selectedTaskIndex, fileName }) => {

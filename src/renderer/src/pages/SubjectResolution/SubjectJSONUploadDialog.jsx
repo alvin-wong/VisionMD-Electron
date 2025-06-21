@@ -1,11 +1,17 @@
 import { useState, useContext } from 'react';
-import {
-  Button, Dialog, DialogActions,
-  DialogContent, DialogContentText,
-  DialogTitle, CircularProgress,
-  Input, Typography, IconButton,
-} from '@mui/material';
+
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import CircularProgress from '@mui/material/CircularProgress';
+import Input from '@mui/material/Input';
+import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+
 import { VideoContext } from '@/contexts/VideoContext';
 
 export default function JSONUploadDialog({ dialogOpen, setDialogOpen, handleJSONUpload }) {
