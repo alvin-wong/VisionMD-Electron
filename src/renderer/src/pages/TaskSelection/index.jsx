@@ -115,7 +115,6 @@ const TaskSelection = () => {
             screen={'tasks'}
             videoRef={videoRef}
             boundingBoxes={boundingBoxes}
-            setBoundingBoxes={setBoundingBoxes}
             fps={fps}
             persons={persons}
             fpsCallback={onFPSCalculation}

@@ -170,6 +170,7 @@ useEffect(() => {
             />
             <IconButton
               size="small"
+              onClick={e => { e.stopPropagation(); onTimeMark('end', task); }}
             >
               <TouchApp fontSize="small" />
             </IconButton>

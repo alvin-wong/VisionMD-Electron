@@ -75,7 +75,7 @@ const SubjectSelectionTab = ({
 
   const handlePlay = timestamp => {
     if (videoRef?.current && videoRef.current.readyState === 4) {
-      videoRef.current.currentTime = timestamp;
+      videoRef.current.currentTime = parseFloat(timestamp) + 0.25;
     }
   };
 

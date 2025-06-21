@@ -17,7 +17,7 @@ export const VideoProvider = ({ children }) => {
     const [fps, setFPS] = useState(null);
 
     const [persons, setPersons] = useState([]);
-    const [boundingBoxes, setBoundingBoxes] = useState([]);
+    const [boundingBoxes, _setBoundingBoxes] = useState([]);
     const [tasks, setTasks] = useState([]);
     const [taskBoxes, setTaskBoxes] = useState([]);
 
@@ -25,7 +25,17 @@ export const VideoProvider = ({ children }) => {
     const [boxesReady, setBoxesReady] = useState(false);
     const [tasksReady, setTasksReady] = useState(false);
 
-    const videoRef = useRef(null);
+    const videoRef = useRef(null);    
+
+
+    const setBoundingBoxes = (newValue) => {
+        console.groupCollapsed("[TRACE] setBoundingBoxes called");
+        console.log("New value:", newValue);
+        console.trace("Call stack:");
+        console.groupEnd();
+        _setBoundingBoxes(newValue);
+    };
+
     
     // Auto save hook on video context enables auto saving on route changes and refreshes
     useAutoSave(

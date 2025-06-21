@@ -39,17 +39,7 @@ const SubjectResolution = () => {
 
   const isSubject = id => persons.find(p => p.id === id)?.isSubject;
 
-  const updateFinalBoundingBoxes = () => {
-    setBoundingBoxes(
-      boundingBoxes.map(frame => ({
-        ...frame,
-        data: frame.data.filter(box => isSubject(box.id)),
-      }))
-    );
-  };
-
   const moveToNextScreen = () => {
-    updateFinalBoundingBoxes();
     navigate('/tasks');
   };
 
