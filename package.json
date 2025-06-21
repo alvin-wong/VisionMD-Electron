@@ -9,6 +9,7 @@
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^5.14.8",
     "@mui/material": "^5.16.14",
+    "@mui/system": "^7.1.1",
     "@types/plotly.js-dist-min": "^2.3.4",
     "dayjs": "^1.11.13",
     "localforage": "^1.10.0",
