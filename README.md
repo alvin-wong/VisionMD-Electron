@@ -7,7 +7,8 @@ Follow the below steps to setup and run the application.
 Installs all the required node modules from the package.json file.
 
 
-### `npm start`
+### `npm run dev`
 
-Starts the app by default on the port 3000.
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Starts the app by default on the port 5173.
+Open [http://localhost:5173](http://localhost:5173) to view it in your browser.
+You must have the backend Django server running on 127.0.0.1 in order to run the full app.

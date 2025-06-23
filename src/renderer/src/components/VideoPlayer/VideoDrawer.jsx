@@ -116,9 +116,8 @@ const VideoDrawer = ({
     const colors3D = landmark_colors;
 
     // pre‐compute the crop offset
-    const offsetX = currentTask.x - currentTask.width * 0.125;
-    const offsetY = currentTask.y - currentTask.height * 0.125;
-
+    const offsetX = currentTask.x;
+    const offsetY = currentTask.y;
     joints2D.forEach((pt, j) => {
       if (!pt || pt.length < 2) return;
       const [lx, ly] = pt;

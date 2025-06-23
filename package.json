@@ -1,5 +1,5 @@
 {
-  "name": "frontend",
+  "name": "visionmd",
   "main": "out/main/index.js",
   "version": "0.1.0",
   "private": true,
@@ -34,8 +34,13 @@
   "scripts": {
     "start": "vite",
     "dev": "cross-env NODE_ENV=development electron-vite dev",
-    "preview": "cross-env NODE_ENV=preview electron-vite preview",
-    "build": "cross-env NODE_ENV=production electron-vite build",
+    "dev:static": "cross-env NODE_ENV=development APP_ENV=dev_static electron-vite dev",
+    "preview": "cross-env NODE_ENV=production electron-vite preview",
+    "build": "electron-vite build",
+    "dist:win": "npm run build && electron-builder --win --x64",
+    "dist:mac": "npm run build && electron-builder --mac --x64 --arm64",
+    "dist:mas": "npm run build && electron-builder --mac mas-dev",
+    "dist:linux": "npm run build && electron-builder --linux --x64",
     "serve": "vite preview",
     "lint": "eslint .",
     "lint:fix": "eslint --fix",
@@ -68,6 +73,7 @@
     "autoprefixer": "^10.4.20",
     "cross-env": "^7.0.3",
     "electron": "^36.4.0",
+    "electron-builder": "^26.0.12",
     "electron-vite": "^3.1.0",
     "eslint": "^9.9.0",
     "eslint-config-prettier": "^9.1.0",
@@ -79,17 +85,7 @@
     "postcss": "^8.4.41",
     "prettier": "^3.3.3",
     "tailwindcss": "^3.4.10",
+    "tree-kill": "^1.2.2",
     "vite": "^5.4.2"
-  },
-  "build": {
-    "extraResources": [
-      {
-        "from": "backend",
-        "to": "backend",
-        "filter": [
-          "**/*"
-        ]
-      }
-    ]
   }
 }
