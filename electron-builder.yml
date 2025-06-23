@@ -10,7 +10,7 @@ win:
   target: nsis
   icon: resources/icon.ico
   extraResources:
-    - from: backend/serve_windows
+    - from: pyinstaller_builds/serve_windows
       to: serve_windows
       filter:
         - "**/*"
@@ -21,7 +21,7 @@ linux:
     - snap
     - deb
   extraResources:
-    - from: backend/serve_linux
+    - from: pyinstaller_builds/serve_linux
       to: serve_linux
       filter:
         - "**/*"
@@ -35,7 +35,7 @@ mac:
     - zip
     - mas
   extraResources:
-    - from: backend/serve_macos
+    - from: pyinstaller_builds/serve_macos
       to: serve_macos
       filter:
         - "**/*"
