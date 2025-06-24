@@ -71,6 +71,16 @@ const SubjectSelectionTab = ({
   useEffect(() => {
     if (persons.length === 1 && !persons[0].isSubject) {
       setPersons(persons.map(person => ({ ...person, isSubject: true })));
+      setBoundingBoxes(prev =>
+        prev.map(frame => ({
+          ...frame,
+          data: frame.data.map(box =>
+            box.id === persons[0].id
+              ? { ...box, Subject: true }
+              : box
+          )
+        }))
+      );
     }
   }, [persons, setPersons]);
 
@@ -87,6 +97,17 @@ const SubjectSelectionTab = ({
           ? { ...person, isSubject: !person.isSubject }
           : person
       )
+    );
+
+    setBoundingBoxes(prev =>
+      prev.map(frame => ({
+        ...frame,
+        data: frame.data.map(box =>
+          box.id === selectedPerson.id
+            ? { ...box, Subject: !box.Subject }
+            : box
+        )
+      }))
     );
   };
 

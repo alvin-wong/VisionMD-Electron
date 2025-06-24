@@ -74,10 +74,13 @@ const TaskSelection = () => {
         const startFrame = Math.ceil(task.start * fps);
         const endFrame = Math.floor(task.end * fps);
 
-        const regionBoxes = boundingBoxes.filter(
-          ({ frameNumber, data }) =>
-            frameNumber >= startFrame && frameNumber <= endFrame && data
-        );
+        const regionBoxes = boundingBoxes
+          .filter(({ frameNumber }) => frameNumber >= startFrame && frameNumber <= endFrame)
+          .map(({ frameNumber, data }) => ({
+            frameNumber,
+            data: data.filter(item => item.Subject === true)
+          }))
+          .filter(({ data }) => data.length > 0);
 
         let minX = Infinity,
           minY = Infinity,

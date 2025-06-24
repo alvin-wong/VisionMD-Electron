@@ -31,6 +31,7 @@ export default function JSONUploadDialog({
     fps,
     tasks,
     taskBoxes,
+    boundingBoxes,
   } = useContext(VideoContext);
 
   const [fileError, setFileError] = useState('');
@@ -85,6 +86,12 @@ export default function JSONUploadDialog({
         height: chosenTaskBox.height,
       };
 
+      const subjectBoundingBoxes = boundingBoxes
+        .map(({ frameNumber, data }) => ({
+          frameNumber,
+          data: data.filter(item => item.Subject === true)
+        }))
+        
       const { start, end, name, data, ...otherTaskFields } = taskData;
       let jsonData = {
         boundingBox: taskBoxCords,
@@ -92,6 +99,7 @@ export default function JSONUploadDialog({
         start_time: taskData.start,
         end_time: taskData.end,
         fps: fps,
+        subject_bounding_boxes: subjectBoundingBoxes,
         ...otherTaskFields,
       };
       
