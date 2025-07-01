@@ -43,6 +43,6 @@ mac:
 
   extraResources:
     - from: pyinstaller_builds/serve_mac
-      to: serve_macos
+      to: serve_mac
       filter:
         - "**/*"
