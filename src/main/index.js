@@ -38,8 +38,8 @@ function startDjangoServer() {
     executableName = 'serve_linux';
     dirName = 'serve_linux'
   } else if (platform === 'darwin') {
-    executableName = 'serve_macos';
-    dirName = 'serve_macos'
+    executableName = 'serve_mac';
+    dirName = 'serve_mac'
   } else {
     throw new Error(`Unsupported platform: ${platform}`);
   }
