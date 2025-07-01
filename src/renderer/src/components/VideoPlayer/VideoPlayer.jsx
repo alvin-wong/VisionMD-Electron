@@ -30,8 +30,8 @@ const VideoPlayer = ({
   const [videoDimensions, setVideoDimensions] = useState({ width: 0, height: 0 });
   const [frameInput, setFrameInput] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
-
   const [currentFrame, setCurrentFrame] = useState(0);
+
   useEffect(() => {
     if (!isEditing) {
       setFrameInput(currentFrame);
@@ -99,7 +99,7 @@ const VideoPlayer = ({
 
     vid.addEventListener('timeupdate', handleUpdate);
     return () => vid.removeEventListener('timeupdate', handleUpdate);
-  }, [selectedTask, tasks, videoRef]);
+  }, [selectedTask, videoRef]);
 
   const getTotalFrameCount = () => {
     if (videoRef.current && !isNaN(videoRef.current.duration)) {

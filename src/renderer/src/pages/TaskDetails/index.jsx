@@ -114,13 +114,20 @@ const TaskDetails = () => {
       height: chosenTaskBox.height,
     };
 
+    const subjectBoundingBoxes = boundingBoxes
+      .map(({ frameNumber, data }) => ({
+        frameNumber,
+        data: data.filter(item => item.Subject === true)
+    }))
+
     const { start, end, name, data, ...otherTaskFields } = taskData;
     const jsonData = JSON.stringify({
       boundingBox: taskBoxCords,
       task_name: name,
       start_time: start,
       end_time: end,
-      fps,
+      fps: fps,
+      subject_bounding_boxes: subjectBoundingBoxes,
       ...otherTaskFields,
     });
 
