@@ -35,4 +35,4 @@ yarn.lock
 # custom
 serve_windows
 serve_linux
-serve_macos
+serve_mac
