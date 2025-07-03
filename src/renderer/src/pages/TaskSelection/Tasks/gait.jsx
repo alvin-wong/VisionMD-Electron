@@ -254,10 +254,10 @@ const Gait = ({
             </IconButton>
           </div>
 
-          {/* Focal Length */}
+          {/* Field of View */}
           <div className="flex items-center space-x-1">
             <label className="inline whitespace-nowrap font-medium">
-              Focal Length (mm):
+              Field of View (degrees):
             </label>
             <input
               className="p-2 w-20 sm:w-24 text-left border rounded-lg"
@@ -271,7 +271,7 @@ const Gait = ({
             />
             <Tooltip
               arrow
-              title="Enter the 35mm equivalent focal length of the lens."
+              title="Enter the field of view (FOV) along the longer side of the video frame."
             >
               <HelpOutlineIcon className="ml-1 text-gray-500 cursor-pointer" fontSize="small" />
             </Tooltip>
