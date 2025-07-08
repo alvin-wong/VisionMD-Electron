@@ -1,5 +1,5 @@
 # electron-builder.yml
-appId: gi
+appId: com.mealab.visionmd
 productName: VisionMD
 
 files:
