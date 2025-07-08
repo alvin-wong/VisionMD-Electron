@@ -34,21 +34,19 @@ function startDjangoServer() {
   if (platform === 'win32') {
     executableName = 'serve_windows.exe';
     dirName = 'serve_windows'
+    basePath = path.join(process.resourcesPath, dirName);
   } else if (platform === 'linux') {
     executableName = 'serve_linux';
     dirName = 'serve_linux'
+    basePath = path.join(process.resourcesPath, dirName);
   } else if (platform === 'darwin') {
     executableName = 'serve_mac';
     dirName = 'serve_mac'
+    basePath = path.join(process.resourcesPath, '..', 'Frameworks', dirName);  
   } else {
     throw new Error(`Unsupported platform: ${platform}`);
   }
 
-  if (isDevStatic) {
-    basePath = path.join(__dirname, '../../backend', dirName);
-  } else {
-    basePath = path.join(process.resourcesPath, dirName);
-  }
   const djangoExecutable = path.join(basePath, executableName);
   console.log("Attempting to start django server from", djangoExecutable)
 
@@ -60,7 +58,7 @@ function startDjangoServer() {
     shell: false,
     env: {
       ...process.env,
-      PATH: `${process.env.PATH};${basePath}`,
+      PATH: `${process.env.PATH}${path.delimiter}${basePath}`,
     },
   });
 

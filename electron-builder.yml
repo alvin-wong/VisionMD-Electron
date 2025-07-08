@@ -32,17 +32,20 @@ linux:
 mac:
   target:
     - dmg
-    - zip
+    - mas
   category: public.app-category.utilities
-  icon: null
-  identity: null
-  hardenedRuntime: true
-  entitlements: build/entitlements.mac.plist
-  entitlementsInherit: build/entitlements.mac.inherit.plist
-  provisioningProfile: build/nonmas.provisionprofile
-
-  extraResources:
+  icon: resources/icon.icns
+  hardenedRuntime: false
+  gatekeeperAssess: false
+  binaries:
+    - Contents/Frameworks/serve_mac/serve_mac
+  extraFiles:
     - from: pyinstaller_builds/serve_mac
-      to: serve_mac
+      to: Frameworks/serve_mac
       filter:
         - "**/*"
+
+mas:
+  entitlements: mac_config/entitlements.mac.plist
+  entitlementsInherit: mac_config/entitlements.mac.inherit.plist
+  provisioningProfile: mac_config/visionmd-mas.provisionprofile
