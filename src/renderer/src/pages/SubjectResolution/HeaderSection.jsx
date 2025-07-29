@@ -1,14 +1,12 @@
-import React from 'react';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Download from '@mui/icons-material/Download';
 import NavigateNext from '@mui/icons-material/NavigateNext';
-import ArrowBack from '@mui/icons-material/ArrowBack';
+import NavigateBefore from '@mui/icons-material/NavigateBefore';
 import { useNavigate } from 'react-router-dom';
+import Tooltip from '@mui/material/Tooltip';
 
 const HeaderSection = ({
   title,
-  isVideoReady,
   boundingBoxes,
   persons,
   fps,
@@ -32,74 +30,51 @@ const HeaderSection = ({
   };
 
   return (
-    <div className={`flex px-6 py-4 items-center ${
-      isVideoReady ? 'justify-between' : 'justify-center'
-    } bg-slate-700 shadow-lg rounded-b-md`}>
-      <Typography variant="h4" className="text-white" fontWeight="500">
+    <div className="flex px-4 items-center justify-between bg-zinc-900 z-1 shadow-lg py-1 relative">
+      <Typography className="text-gray-100" fontWeight="500">
         {title}
       </Typography>
-      
-      {isVideoReady && (
-        <div className="flex gap-3">
-          <Button
-            variant="contained"
+
+      <div className="flex gap-3 items-center">
+        <span title="Go Back">
+          <Tooltip
+            arrow
+            title="Go Back"
+          >
+          <NavigateBefore
             onClick={() => navigate('/')}
-            startIcon={<ArrowBack />}
-            sx={{
-              bgcolor: 'primary.main',
-              '&:hover': { bgcolor: 'primary.dark' },
-              textTransform: 'none',
-              fontWeight: 'bold',
-              px: 3,
-              py: 1
-            }}
-          >
-            Back
-          </Button>
+            className="cursor-pointer text-white hover:text-gray-300"
+            fontSize="medium"
+          />
+          </Tooltip>
+        </span>
 
-          <Button
-            variant="contained"
-            onClick={downloadConfig}
-            disabled={boundingBoxes.length === 0}
-            startIcon={<Download />}
-            sx={{
-              bgcolor: 'primary.main',
-              '&:hover': { bgcolor: 'primary.dark' },
-              '&:disabled': {
-                bgcolor: 'action.disabledBackground',
-                color: 'grey.600'
-              },
-              textTransform: 'none',
-              fontWeight: 'bold',
-              px: 3,
-              py: 1
-            }}
+        <span title="Download Config">
+          <Tooltip
+            arrow
+            title="Download Config"
           >
-            Config
-          </Button>
-
-          <Button
-            variant="contained"
-            onClick={moveToNextScreen}
-            endIcon={<NavigateNext />}
-            disabled={boundingBoxes.length === 0}
-            sx={{
-              bgcolor: 'primary.main',
-              '&:hover': { bgcolor: 'primary.dark' },
-              '&:disabled': {
-                bgcolor: 'action.disabledBackground',
-                color: 'grey.600'
-              },
-              textTransform: 'none',
-              fontWeight: 'bold',
-              px: 3,
-              py: 1
-            }}
+          <Download
+            onClick={boundingBoxes.length === 0 ? undefined : downloadConfig}
+            className={`cursor-pointer ${boundingBoxes.length === 0 ? 'text-gray-500 cursor-not-allowed' : 'text-white hover:text-gray-300'}`}
+            fontSize="small"
+          />
+          </Tooltip>
+        </span>
+        
+        <span title="Go Forward">
+          <Tooltip
+            arrow
+            title="Go Forward"
           >
-            Proceed
-          </Button>
-        </div>
-      )}
+          <NavigateNext
+            onClick={boundingBoxes.length === 0 ? undefined : moveToNextScreen}
+            className={`cursor-pointer ${boundingBoxes.length === 0 ? 'text-gray-500 cursor-not-allowed' : 'text-white hover:text-gray-300'}`}
+            fontSize="medium"
+          />
+          </Tooltip>
+        </span>
+      </div>
     </div>
   );
 };

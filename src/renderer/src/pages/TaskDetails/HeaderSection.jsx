@@ -1,38 +1,31 @@
 //src/pages/TaskDetails/HeaderSection.jsx
-import ArrowBack from '@mui/icons-material/ArrowBack';
-import Button from '@mui/material/Button';
+import NavigateBefore from '@mui/icons-material/NavigateBefore';
 import { useNavigate } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
+import Tooltip from '@mui/material/Tooltip';
 
 
-const HeaderSection = ({ title, isVideoReady }) => {
+const HeaderSection = ({ title }) => {
   const navigate = useNavigate();
 
   return (
-    <header className="bg-slate-700 rounded-b-md py-4 px-8 shadow-lg">
-      <div className={`mx-auto flex items-center ${isVideoReady ? 'justify-between' : 'justify-center'}`}>
-      <Typography variant="h4" className="text-white font-bold font-sans">
+    <header className="flex px-4 items-center justify-between bg-zinc-900 z-1 shadow-lg py-1 relative">
+      <Typography className="text-gray-100">
         {title}
       </Typography>
         
-        {isVideoReady && (
-          <Button
-            variant="contained"
+      <span title="Go Back">
+        <Tooltip
+          arrow
+          title='Go back'
+        >
+          <NavigateBefore
             onClick={() => navigate('/tasks')}
-            startIcon={<ArrowBack />}
-            sx={{
-              bgcolor: 'primary.main',
-              '&:hover': { bgcolor: 'primary.dark' },
-              textTransform: 'none',
-              fontWeight: 'bold',
-              px: 3,
-              py: 1
-            }}
-          >
-            Back
-          </Button>
-        )}
-      </div>
+            className="cursor-pointer text-white hover:text-gray-300"
+            fontSize="medium"
+          />
+        </Tooltip>
+      </span>
     </header>
   );
 };

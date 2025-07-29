@@ -482,7 +482,7 @@ const WavePlotEditable = ({
       className="relative flex flex-col items-center pr-8 pl-8 pb-8"
     >
       <div
-        className="w-full max-w-5xl p-4 bg-white rounded-xl"
+        className="w-full max-w-5xl p-4 bg-[#333338] rounded-xl"
         style={{ minHeight: '400px' }}
       >
         <Plot
@@ -571,13 +571,18 @@ const WavePlotEditable = ({
             },
           }}
           layout={{
+            plot_bgcolor: '#333338',
+            paper_bgcolor: '#333338',
             shapes,
             dragmode: 'pan',
             xaxis: {
               title: {
                 text: 'Time [s]',
                 standoff: 20,
+                font: { color: '#f3f4f6' },
               },
+              gridcolor: '#3f3f46',
+              tickfont: { color: '#f3f4f6' },
               range: [startTime, endTime],
               fixedrange: false,
             },
@@ -585,7 +590,10 @@ const WavePlotEditable = ({
               title: {
                 text: 'Distance',
                 standoff: 20,
+                font: { color: '#f3f4f6' },
               },
+              gridcolor: '#3f3f46',
+              tickfont: { color: '#f3f4f6' },
               automargin: true,
               fixedrange: false,
             },
@@ -596,9 +604,9 @@ const WavePlotEditable = ({
               y: 1,
               xanchor: 'right',
               yanchor: 'top',
-              bgcolor: 'rgba(255, 255, 255, 0.75)',
+              bgcolor: 'rgba(51, 51, 56, 0.8)',
               font: {
-                color: 'rgba(0, 0, 0,0.9)',
+                color: '#f3f4f6',
                 size: 12,
                 family: 'Arial, sans-serif',
               },

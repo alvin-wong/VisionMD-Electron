@@ -69,24 +69,24 @@ const VideoControls = ({ videoRef, isPlaying, fps }) => {
   }, [fps, videoRef]);
 
   return (
-    <div className="flex gap-4 text-xl justify-center items-center bg-gray-200 backdrop-blur-md rounded-2xl px-4 py-2 text-black">
-      <Tooltip title="Down Arrow">
+    <div className="flex gap-4 text-xl justify-center items-center bg-zinc-700 backdrop-blur-md rounded-2xl px-4 py-2 text-gray-100">
+      <Tooltip arrow title="Down Arrow">
         <button onClick={() => changeVideoFrame(-5)}> -5 </button>
       </Tooltip>
-      <Tooltip title="Left Arrow">
+      <Tooltip arrow title="Left Arrow">
         <button onClick={() => changeVideoFrame(-1)}> -1 </button>
       </Tooltip>
-      <Tooltip title="Space Bar">
+      <Tooltip arrow title="Space Bar">
         {isPlaying ? (
           <Pause className="cursor-pointer" onClick={playOrPause} />
         ) : (
           <PlayArrow className="cursor-pointer" onClick={playOrPause} />
         )}
       </Tooltip>
-      <Tooltip title="Right Arrow">
+      <Tooltip arrow title="Right Arrow">
         <button onClick={() => changeVideoFrame(1)}> +1 </button>
       </Tooltip>
-      <Tooltip title="Up Arrow">
+      <Tooltip arrow title="Up Arrow">
         <button onClick={() => changeVideoFrame(5)}> +5 </button>
       </Tooltip>
     </div>

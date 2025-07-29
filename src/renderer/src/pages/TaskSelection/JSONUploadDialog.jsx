@@ -173,50 +173,64 @@ export default function JSONUploadDialog({
   };
 
   return (
-    <React.Fragment>
-      <Dialog open={dialogOpen} onClose={handleClose}>
-        <DialogTitle>Task Setup</DialogTitle>
-        <IconButton
-          aria-label="close"
-          onClick={handleClose}
-          sx={{
-            position: 'absolute',
-            right: 8,
-            top: 8,
-            color: theme => theme.palette.grey[500],
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
-        <DialogContent>
-          <DialogContentText>
-            {
-              <>
-                Upload JSON containing the bounding boxes for the tasks or click
-                on manually process to select tasks manually.
-              </>
-            }
-          </DialogContentText>
-          {
-            <div>
-              <Input
-                type="file"
-                accept=".json"
-                onChange={handleFileChange}
-                style={{ margin: '10px 0' }}
-                label="Upload JSON file"
-              />
-              {fileError && <Typography color="error">{fileError}</Typography>}
-            </div>
-          }
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleJSONProcess} disabled={jsonContent === null}>
+    <Dialog 
+      open={dialogOpen} 
+      onClose={handleClose}
+      PaperProps={{
+        sx: {
+          backgroundColor: '#333338',
+          borderRadius: 3,
+        },
+      }}
+    >
+      <DialogTitle className='text-gray-100'>
+        <div className='flex flex-row w-full justify-between'>
+          Task Setup
+          <IconButton onClick={handleClose}>
+            <CloseIcon className='text-gray-100'/>
+          </IconButton>
+        </div>
+      </DialogTitle>
+
+      <DialogContent>
+        <p className='text-gray-100'>
+          Upload JSON containing the bounding boxes for the tasks or click
+          on manually process to select tasks manually.
+        </p>
+        <div className='flex w-full justify-center mt-8'>
+          <input
+            id="file-upload"
+            type="file"
+            accept=".json"
+            onChange={handleFileChange}
+            className="hidden"
+          />
+          <label
+            htmlFor="file-upload"
+            className="cursor-pointer px-4 py-2
+                      text-gray-100 bg-transparent rounded-md
+                      border-2 border-zinc-600 border-dashed hover:bg-zinc-700"
+          >
+            Upload JSON File
+          </label>
+          {fileError && <Typography color="error">{fileError}</Typography>}
+        </div>
+      </DialogContent>
+
+      <DialogActions>
+        <div className='flex flex-row justify-between w-full p-2'>
+          <button
+            className={`rounded-md p-1.5 ${(jsonContent === null || serverProcessing) ? "bg-transparent text-gray-500" : "bg-[#1976d2] hover:bg-[#1565c0] text-gray-100"}`}
+            onClick={handleJSONProcess} 
+            disabled={jsonContent === null}
+          >
             Process using JSON
-          </Button>
-          <Button onClick={handleManualProcess}>Manual Selection</Button>
-        </DialogActions>
-      </Dialog>
-    </React.Fragment>
+          </button>
+          <button className='rounded-md bg-[#1976d2] hover:bg-[#1565c0] p-1.5 text-gray-100' onClick={handleManualProcess}>
+            Manual Selection
+          </button>
+        </div>
+      </DialogActions>
+    </Dialog>
   );
 }

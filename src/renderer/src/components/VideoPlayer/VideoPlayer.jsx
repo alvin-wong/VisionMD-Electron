@@ -14,8 +14,6 @@ const VideoPlayer = ({
   setVideoReady,
   fileName,
   screen,
-  taskBoxes,
-  setTaskBoxes,
   selectedTask,
   tasks,
   setTasks,
@@ -168,7 +166,7 @@ const VideoPlayer = ({
   
 
   return (
-    <div className="flex flex-col justify-center items-center bg-gray-100 w-full h-full">
+    <div className="flex flex-col justify-center items-center bg-zinc-800 w-full h-full">
       {videoURL && (
         
         <div className="h-full w-full flex justify-around flex-col">
@@ -177,12 +175,12 @@ const VideoPlayer = ({
           <div className="w-full flex flex-row items-center justify-around py-4">
             {/* Title */}
             <div className="flex items-center justify-center">
-              <span className="text-lg font-semibold text-gray-800">{fileName}</span>
+              <span className="text-lg font-semibold text-gray-100">{fileName}</span>
             </div>
             {/* Frame Counter */}
             <div className="flex items-center space-x-1">
               <input
-                className="w-24 text-center border rounded-lg px-2 py-1"
+                className="w-24 text-center border border-zinc-700 bg-zinc-700 text-gray-100 rounded-lg px-2 py-1 focus:border-blue-500 focus:outline-none"
                 type="text"
                 value={frameInput}
                 onChange={(e) => setFrameInput(e.target.value)}
@@ -199,8 +197,8 @@ const VideoPlayer = ({
                   if (e.key === 'Enter') e.target.blur();
                 }}
               />
-              <span className="text-gray-600">/</span>
-              <span className="text-gray-800">{getTotalFrameCount()}</span>
+              <span className="text-gray-100">/</span>
+              <span className="text-gray-100">{getTotalFrameCount()}</span>
             </div>
           </div>
           )}
@@ -244,7 +242,6 @@ const VideoPlayer = ({
                 fps={fps}
                 persons={persons}
                 tasks={tasks}
-                taskBoxes={taskBoxes}
                 landMarks={tasks[selectedTask]?.data?.landMarks}
                 selectedTask={selectedTask}
                 isPlaying={isPlaying}
@@ -265,8 +262,6 @@ const VideoPlayer = ({
                 <InteractiveOverlays
                   tasks={tasks}
                   setTasks={setTasks}
-                  taskBoxes={taskBoxes}
-                  setTaskBoxes={setTaskBoxes}
                   fileName={fileName}
                   currentFrame={currentFrame}
                   zoomLevel={zoomLevel}
@@ -295,7 +290,7 @@ const VideoPlayer = ({
                 valueLabelDisplay="auto"
                 valueLabelFormat={(value) => `${value}x`}
               />
-              <span className="text-md font-semibold text-gray-800 mt-4">Zoom</span>
+              <span className="text-md font-semibold text-gray-100 mt-4">Zoom</span>
             </div>
           </div>
 

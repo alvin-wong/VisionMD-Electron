@@ -141,52 +141,73 @@ export default function JSONUploadDialog({ dialogOpen, setDialogOpen, handleJSON
   };
 
   return (
-    <Dialog open={dialogOpen} onClose={handleClose}>
-      <DialogTitle>
-        Video parser
-        <IconButton
-          aria-label="close"
-          onClick={handleClose}
-          sx={{
-            position: 'absolute',
-            right: 8,
-            top: 8,
-            color: theme => theme.palette.grey[500],
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
+    <Dialog 
+      open={dialogOpen} 
+      onClose={handleClose}
+      PaperProps={{
+        sx: {
+          backgroundColor: '#333338',
+          borderRadius: 3,
+        },
+      }}
+    >
+      <DialogTitle className='text-gray-100'>
+        <div className='flex flex-row w-full justify-between'>
+          Video Parser
+          <IconButton onClick={handleClose}>
+            <CloseIcon className='text-gray-100'/>
+          </IconButton>
+        </div>
       </DialogTitle>
+
       <DialogContent>
         {!serverProcessing ? (
-          <>
-            <DialogContentText>
+          <div>
+            <p className="text-gray-100">
               Upload JSON manually containing the bounding boxes for the video or click on auto-parse to let the server handle it.
-            </DialogContentText>
-            <div>
-              <Input
+            </p>
+            <div className='flex w-full justify-center mt-8'>
+              <input
+                id="file-upload"
                 type="file"
                 accept=".json"
                 onChange={handleFileChange}
-                style={{ margin: '10px 0' }}
+                className="hidden"
               />
+              <label
+                htmlFor="file-upload"
+                className="cursor-pointer px-4 py-2
+                          text-gray-100 bg-transparent rounded-md
+                          border-2 border-zinc-600 border-dashed hover:bg-zinc-700"
+              >
+                Upload JSON File
+              </label>
               {fileError && <Typography color="error">{fileError}</Typography>}
             </div>
-          </>
+          </div>
         ) : (
           <div className="flex flex-col w-full h-full justify-center items-center gap-10">
-            <div>Server processing the request</div>
-            <CircularProgress size={80} />
+            <div className='text-gray-100'>Server processing the request</div>
+            <CircularProgress className='my-4' size={80} />
           </div>
         )}
       </DialogContent>
+
       <DialogActions>
-        <Button onClick={handleJSONProcess} disabled={jsonContent === null || serverProcessing}>
-          Process using JSON
-        </Button>
-        <Button onClick={handleAutoProcess} disabled={serverProcessing}>
-          Auto-Process
-        </Button>
+        {!serverProcessing && (
+          <div className='flex flex-row justify-between w-full p-2'>
+            <button 
+              className={`rounded-md p-1.5 ${(jsonContent === null || serverProcessing) ? "bg-transparent text-gray-500" : "bg-[#1976d2] hover:bg-[#1565c0] text-gray-100"}`}
+              onClick={handleJSONProcess}
+              disabled={jsonContent === null || serverProcessing}
+            >
+              Process with JSON
+            </button>
+            <button className='rounded-md bg-[#1976d2] hover:bg-[#1565c0] p-1.5 text-gray-100' onClick={handleAutoProcess} disabled={serverProcessing}>
+              Auto-Process
+            </button>
+          </div>
+        )}
       </DialogActions>
     </Dialog>
   );

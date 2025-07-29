@@ -29,7 +29,8 @@ const ScatterPlot = ({ tasks, selectedTaskIndex, fileName }) => {
 
     setPlotlyLayout({
       polar: {
-        radialaxis: { visible: true, autorange: true, },
+        radialaxis: { visible: true, autorange: true, tickfont: { color: '#f3f4f6' }},
+        angularaxis: { tickfont: { color: '#f3f4f6' },},
       },
       showlegend: false,
       autosize: false,
@@ -72,13 +73,13 @@ const ScatterPlot = ({ tasks, selectedTaskIndex, fileName }) => {
     <div style={{ position: 'relative' }}>
       <div className="flex p-4 space-x-2">
         <button
-          className={`px-4 py-2 text-sm font-semibold rounded-md ${tableView ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'}`}
+          className={`px-4 py-2 text-sm font-semibold rounded-md ${tableView ? 'bg-[#1976d2] hover:bg-[#1565c0] text-white' : 'bg-gray-200 text-gray-800'}`}
           onClick={showTable}
         >
           Table
         </button>
         <button
-          className={`px-4 py-2 text-sm font-semibold rounded-md ${!tableView ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'}`}
+          className={`px-4 py-2 text-sm font-semibold rounded-md ${!tableView ? 'bg-[#1976d2] hover:bg-[#1565c0] text-white' : 'bg-gray-200 text-gray-800'}`}
           onClick={showPlot}
         >
           Scatter Plot
@@ -87,25 +88,25 @@ const ScatterPlot = ({ tasks, selectedTaskIndex, fileName }) => {
 
       {tableView ? (
         <div className="p-6">
-          <div className="overflow-x-auto rounded-lg shadow-lg">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-200">
+          <div className="overflow-x-auto bg-[#333338] rounded-lg shadow-lg">
+            <table className="min-w-full divide-y divide-zinc-200">
+              <thead className="">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-100 uppercase tracking-wider">
                     Feature
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-100 uppercase tracking-wider">
                     Value
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="divide-y divide-zinc-600">
                 {Object.entries(radarTable).map(([feat, val]) => (
                   <tr key={feat}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-200">
                       {feat}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
                       {typeof val === 'number' ? val.toFixed(4) : val}
                     </td>
                   </tr>

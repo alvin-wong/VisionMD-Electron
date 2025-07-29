@@ -9,7 +9,6 @@ const TaskSelectionTab = ({
   setBoundingBoxes,
   setTasks,
   setFPS,
-  setTaskBoxes,
   onTaskChange,
   onTaskDelete,
   isVideoReady,
@@ -20,9 +19,9 @@ const TaskSelectionTab = ({
 }) => {
   const [openJsonUpload, setOpenJsonUpload] = useState(false);
 
-  const getTasksFromTaskBoxes = curTaskBoxes => {
+  const getTasksFromtasks = curtasks => {
     const newTasks = [];
-    for (let curTaskBox of curTaskBoxes) {
+    for (let curTaskBox of curtasks) {
       let curTask = {
         id: curTaskBox?.id,
         start: curTaskBox?.start,
@@ -43,9 +42,9 @@ const TaskSelectionTab = ({
         setBoundingBoxes(jsonContent['boundingBoxes']);
         setFPS(jsonContent['fps']);
         if (jsonContent.hasOwnProperty('tasks')) {
-          const curTaskBoxes = jsonContent['tasks'];
-          setTaskBoxes(curTaskBoxes);
-          setTasks(getTasksFromTaskBoxes(curTaskBoxes));
+          const curtasks = jsonContent['tasks'];
+          setTasks(curtasks);
+          setTasks(getTasksFromtasks(curtasks));
         }
       } else {
         //old json
@@ -66,29 +65,17 @@ const TaskSelectionTab = ({
   };
 
   return (
-    <div className={'flex-1 flex flex-col p-2 w-full min-h-0'}>
-      {isVideoReady && !tasksReady && (
+    <div className={'flex flex-col w-full h-full p-2 py-4'}>
+      {isVideoReady && tasks.length === 0  && (
         <div
           className={
-            'flex justify-center items-center h-full flex-col gap-4 w-full px-10 flex-1 py-4 overflow-y-auto rounded-lg bg-gray-100 '
+            'flex justify-center items-center h-full flex-col gap-4 w-full px-10 flex-1 py-4 overflow-y-auto rounded-lg bg-[#333338]'
           }
         >
-          <div>Setup the tasks</div>
-          <Button 
-          variant="contained"
-          onClick={() => setOpenJsonUpload(true)}
-          sx={{
-            bgcolor: 'primary.main',
-            '&:hover': { bgcolor: 'primary.dark' },
-            textTransform: 'none',
-            fontWeight: 'bold',
-            px: 3,
-            py: 1,
-            fontSize: '1rem'
-          }}
-        >
+          <div className='text-gray-100'>Setup the tasks</div>
+          <button className='bg-[#1976d2] text-gray-100 rounded-md p-2' onClick={() => setOpenJsonUpload(true)}>
           Setup
-        </Button>
+        </button>
           <JSONUploadDialog
             dialogOpen={openJsonUpload}
             setDialogOpen={setOpenJsonUpload}
@@ -97,7 +84,7 @@ const TaskSelectionTab = ({
           />
         </div>
       )}
-      {isVideoReady && tasksReady && (
+      {isVideoReady && tasks.length !== 0 && (
         <TaskList
           tasks={tasks}
           onTaskChange={onTaskChange}

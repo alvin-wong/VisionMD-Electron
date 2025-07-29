@@ -22,9 +22,9 @@ const SubjectsWaveForm = ({ videoRef, isVideoReady }) => {
     const duration = videoRef.current.duration;
     return {
       container: waveformRef.current,
-      waveColor: 'violet',
-      progressColor: 'purple',
-      cursorColor: 'navy',
+      waveColor: '#1976d2',
+      progressColor: '#0b397eff',
+      cursorColor: 'gray',
       barWidth: 2,
       barRadius: 3,
       responsive: true,
@@ -54,7 +54,11 @@ const SubjectsWaveForm = ({ videoRef, isVideoReady }) => {
     }
 
     waveSurfer.current = WaveSurfer.create(getWaveSurferOptions());
-    waveSurfer.current.registerPlugin(HoverPlugin.create({}));
+    waveSurfer.current.registerPlugin(
+      HoverPlugin.create({
+        labelColor: '#f3f4f6',
+      })
+    );
 
     waveSurfer.current.on('loading', percent => {
       setLoadPercent(percent);
@@ -72,10 +76,11 @@ const SubjectsWaveForm = ({ videoRef, isVideoReady }) => {
   }, [isVideoReady, videoRef]);
 
   return (
-    <div className="flex flex-col gap-2 justify-center items-center w-full px-2">
+    <div className="flex flex-col justify-center items-center w-full pt-4 p-2">
       {isVideoReady && (
-        <div className="w-full flex items-center justify-between px-8">
-          <div className="font-semibold text-center">
+      <div className="flex flex-col w-full p-4 rounded-lg bg-[#333338]">
+        <div className="w-full flex items-center justify-between pb-2 border-b-2 border-zinc-500">
+          <div className="text-gray-100 text-left">
             {waveLoading
               ? `Loading Waveform: ${Math.round(loadPercent)}%...`
               : 'Waveform'}
@@ -92,12 +97,21 @@ const SubjectsWaveForm = ({ videoRef, isVideoReady }) => {
             valueLabelFormat={value => `${value}x`}
           />
         </div>
+        <div
+          id="waveform"
+          className="w-full py-2 overflow-x-auto" 
+          ref={waveformRef}
+        />
+      </div>
       )}
+
+      {!isVideoReady && (
       <div
         id="waveform"
-        className="w-full px-8 py-2 overflow-x-auto" // Change from overflow-x-scroll to overflow-x-auto
+        className="w-full px-8 py-2 bg-zinc-700 overflow-x-auto"
         ref={waveformRef}
       />
+      )}
     </div>
   );
 };

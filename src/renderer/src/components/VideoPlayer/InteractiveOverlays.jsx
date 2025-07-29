@@ -55,8 +55,6 @@ const ResizeHandles = ({ x, y, width, height, onResize, item, index, handleSize 
 const InteractiveOverlays = ({
   tasks,
   setTasks,
-  taskBoxes,
-  setTaskBoxes,
   fileName,
   zoomLevel,
   panOffset,
@@ -122,8 +120,8 @@ const InteractiveOverlays = ({
       startY,
       initialX: task.x,
       initialY: task.y,
-      initialWidth: task.width,
-      initialHeight: task.height,
+      initialWidth: task.box_width,
+      initialHeight: task.box_height,
       side,
     };
     window.addEventListener('pointermove', handleTaskResizeMove);
@@ -153,7 +151,7 @@ const InteractiveOverlays = ({
     } else if (side === 'right') {
       newWidth = Math.max(minSize, initialWidth + deltaX);
     }
-    setTaskBoxes((prevBoxes) =>
+    setTasks((prevBoxes) =>
       prevBoxes.map((task, idx) =>
         idx === taskIndex ? { ...task, x: newX, y: newY, width: newWidth, height: newHeight } : task
       )
@@ -189,9 +187,9 @@ const InteractiveOverlays = ({
     const dy = y - startY;
     const newX = initialX + dx;
     const newY = initialY + dy;
-    setTaskBoxes((prevBoxes) =>
+    setTasks((prevBoxes) =>
       prevBoxes.map((task, idx) =>
-        idx === draggingTaskRef.current.taskIndex ? { ...task, x: newX, y: newY } : task
+        idx === draggingTaskRef.current?.taskIndex?  { ...task, x: newX, y: newY } : task
       )
     );
   };
@@ -207,7 +205,7 @@ const InteractiveOverlays = ({
     e.stopPropagation();
     e.preventDefault();
     const svgPoint = getSVGPoint(e);
-    const taskBox = taskBoxes[selectedTask];
+    const taskBox = tasks[selectedTask];
     const currentLandmark = tasks[selectedTask].data.landMarks[landMarkIndex][landmarkIdx];
     const circleCenterX = currentLandmark[0] + taskBox.x;
     const circleCenterY = currentLandmark[1] + taskBox.y;
@@ -222,7 +220,7 @@ const InteractiveOverlays = ({
     if (!draggingLandmarkRef.current) return;
     const svgPoint = getSVGPoint(e);
     const { landmarkIdx, offsetX, offsetY } = draggingLandmarkRef.current;
-    const taskBox = taskBoxes[selectedTask];
+    const taskBox = tasks[selectedTask];
     const newCircleCenterX = svgPoint.x - offsetX;
     const newCircleCenterY = svgPoint.y - offsetY;
     const newRelativeX = newCircleCenterX - taskBox.x;
@@ -301,14 +299,14 @@ const InteractiveOverlays = ({
   let taskIndex = -1;
   if (screen === 'tasks') {
     const currentTime = currentFrame / fps;
-    taskIndex = taskBoxes.findIndex((t) => currentTime >= t.start && currentTime <= t.end);
+    taskIndex = tasks.findIndex((t) => currentTime >= t.start && currentTime <= t.end);
     if (taskIndex !== -1) {
-      taskToRender = taskBoxes[taskIndex];
+      taskToRender = tasks[taskIndex];
     }
   } else if (screen === 'taskDetails') {
-    if (selectedTask != null && taskBoxes[selectedTask]) {
+    if (selectedTask != null && tasks[selectedTask]) {
       taskIndex = selectedTask;
-      taskToRender = taskBoxes[selectedTask];
+      taskToRender = tasks[selectedTask];
     }
   }
 
@@ -377,8 +375,8 @@ const InteractiveOverlays = ({
               return (
                 <circle
                   key={`landmark-${idx}`}
-                  cx={px + taskBoxes[selectedTask].x}
-                  cy={py + taskBoxes[selectedTask].y}
+                  cx={px}
+                  cy={py}
                   r={12.5}
                   fill={fillColor}
                   stroke="white"
