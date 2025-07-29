@@ -7,7 +7,6 @@ const VideoDrawer = ({
   fps,
   persons,
   tasks,
-  taskBoxes,
   landMarks,
   selectedTask,
   style,
@@ -97,12 +96,12 @@ const VideoDrawer = ({
   }, [boundingBoxes, persons]);
 
   const drawLandMarks = useCallback(() => {
-    if (!taskBoxes.length || selectedTask == null) return;
+    if (!tasks.length || selectedTask == null) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
 
-    const currentTask = taskBoxes[selectedTask];
+    const currentTask = tasks[selectedTask];
     // compute the frame‐index relative to the start of this task
     const startFrame = Math.floor(currentTask.start * fps);
     const frameIndex = currentFrame.current - startFrame;
@@ -121,7 +120,6 @@ const VideoDrawer = ({
     joints2D.forEach((pt, j) => {
       if (!pt || pt.length < 2) return;
       const [lx, ly] = pt;
-      // pick your per‐joint color or default to red
       let fill = 'red';
       if (
         Array.isArray(colors3D) &&
@@ -133,10 +131,10 @@ const VideoDrawer = ({
       }
       ctx.fillStyle = fill;
       ctx.beginPath();
-      ctx.arc(lx + offsetX, ly + offsetY, 12.5, 0, 2 * Math.PI);
+      ctx.arc(lx , ly , 12.5, 0, 2 * Math.PI);
       ctx.fill();
     });
-  }, [taskBoxes, selectedTask, fps, landMarks, landmark_colors]);
+  }, [tasks, selectedTask, fps, landMarks, landmark_colors]);
 
 
   // Modified drawFrame: we only draw bounding boxes when not in a taskBox time interval.
@@ -152,8 +150,12 @@ const VideoDrawer = ({
       drawVideoFrame();
 
       // Check if currentTime is within any taskBox's time window.
-      const inTaskTime = taskBoxes.some((task) => currentTime >= task.start && currentTime <= task.end);
-      if (screen !== 'taskDetails' && !inTaskTime) {
+      const inTaskTime = tasks.some((task) => currentTime >= task.start && currentTime <= task.end);
+      if (screen === 'subject_resolution') {
+        drawBoundingBoxes();
+      }
+
+      if (screen === 'tasks' && !inTaskTime) {
         drawBoundingBoxes();
       }
 
@@ -161,7 +163,7 @@ const VideoDrawer = ({
         drawLandMarks();
       }
     },
-    [getFrameNumber, clearCanvas, drawVideoFrame, drawBoundingBoxes, drawLandMarks, landmark_colors, taskBoxes, screen, isPlaying]
+    [getFrameNumber, clearCanvas, drawVideoFrame, drawBoundingBoxes, drawLandMarks, landmark_colors, tasks, screen, isPlaying]
   );
 
   // Set canvas dimensions and start the continuous render loop.
@@ -203,7 +205,7 @@ const VideoDrawer = ({
     if (videoRef?.current) {
       drawFrame(videoRef.current.currentTime);
     }
-  }, [persons, taskBoxes, landMarks, landmark_colors, selectedTask, screen, drawFrame, videoRef, isPlaying]);
+  }, [persons, tasks, landMarks, landmark_colors, selectedTask, screen, drawFrame, videoRef, isPlaying]);
   
   return (
     <canvas

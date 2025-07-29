@@ -22,8 +22,6 @@ const SubjectResolution = () => {
     setBoundingBoxes,
     fps,
     setFPS,
-    taskBoxes,
-    setTaskBoxes,
     persons,
     setPersons,
     boxesReady,
@@ -44,13 +42,11 @@ const SubjectResolution = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen overflow-hidden">
-      <div className="flex flex-1 w-full">
-        <div className="flex w-1/2 max-h-screen bg-red-600">
+    <div className="flex flex-col h-screen">
+      <div className="flex flex-1 w-full h-full overflow-hidden">
+        <div className="flex w-1/2 h-full">
           <VideoPlayer
             screen="subject_resolution"
-            taskBoxes={taskBoxes}
-            setTaskBoxes={setTaskBoxes}
             videoRef={videoRef}
             boundingBoxes={boundingBoxes}
             setBoundingBoxes={setBoundingBoxes}
@@ -65,7 +61,7 @@ const SubjectResolution = () => {
             setTasks={setTasks}
           />
         </div>
-        <div className="flex flex-col gap-2 w-1/2 h-full max-h-screen overflow-y-auto">
+        <div className="flex flex-col gap-2 w-1/2 h-full max-h-screen border-l border-l-zinc-600 overflow-y-auto bg-zinc-800">
           <HeaderSection
             title="Subject Selection"
             isVideoReady={videoReady}

@@ -66,24 +66,24 @@ const FeatureTable = ({ tasks, selectedTaskIndex, fileName }) => {
   }, [open]);
 
   return (
-    <>
-      <div className="overflow-x-auto m-4 rounded-lg shadow-lg">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-200">
+    <div>
+      <div className="overflow-x-auto m-4 rounded-lg border-2 border-zinc-500 bg-[#333338]">
+        <table className="min-w-full divide-y divide-zinc-400">
+          <thead className="">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left font-normal text-gray-100">
                 Feature
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left font-normal text-gray-100">
                 Value
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody className="divide-y divide-zinc-600">
             {entries.map(([k, v]) => (
               <tr key={k}>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{k}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-200">{k}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
                   {typeof v === 'number' ? v.toFixed(4) : v}
                 </td>
               </tr>
@@ -111,9 +111,9 @@ const FeatureTable = ({ tasks, selectedTaskIndex, fileName }) => {
         </div>
 
         {open && (
-          <div className="absolute top-full left-1/2 -translate-x-1/2 mt-1 w-40 bg-white border border-gray-200 rounded-md shadow-md z-20">
+          <div className="absolute top-full left-1/2 -translate-x-1/2 mt-1 w-40 border border-gray-200 rounded-md z-20">
             <button
-              className="w-full text-left px-4 py-2 hover:bg-gray-100"
+              className="w-full text-center rounded-md px-2 py-1 bg-white hover:bg-gray-100"
               onClick={() => {
                 csvAll();
                 setOpen(false);
@@ -126,7 +126,7 @@ const FeatureTable = ({ tasks, selectedTaskIndex, fileName }) => {
         )}
       </div>
 
-    </>
+    </div>
   );
 };
 

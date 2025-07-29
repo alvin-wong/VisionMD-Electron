@@ -1,23 +1,20 @@
 import Download from '@mui/icons-material/Download';
 import NavigateNext from '@mui/icons-material/NavigateNext';
-import ArrowBack from '@mui/icons-material/ArrowBack';
-
-import Button from '@mui/material/Button';
+import NavigateBefore from '@mui/icons-material/NavigateBefore';
 import useTheme from '@mui/material/styles/useTheme';
 import Typography from '@mui/material/Typography';
+import Tooltip from '@mui/material/Tooltip';
 
 import { useNavigate } from 'react-router-dom';
 
 
 const HeaderSection = ({
   title,
-  isVideoReady,
   boundingBoxes,
-  persons,
   fileName,
   fps,
   moveToNextScreen,
-  taskBoxes,
+  tasks,
 }) => {
   const navigate = useNavigate();
   const theme = useTheme();
@@ -27,7 +24,7 @@ const HeaderSection = ({
     const fileData = {
       fps: fps,
       boundingBoxes: boundingBoxes,
-      tasks: taskBoxes,
+      tasks: tasks,
     };
     
     const json = JSON.stringify(fileData);
@@ -45,73 +42,36 @@ const HeaderSection = ({
   };
   
   return (
-    <div className={`flex px-6 py-4 items-center ${isVideoReady ? 'justify-between' : 'justify-center'} bg-slate-700 rounded-b-md shadow-lg`}>
-    <Typography variant="h4" className="text-white font-bold font-sans">
-    {title}
-    </Typography>
-    
-    
-    {isVideoReady && (
-      <div className="flex gap-3">
-      <Button
-      variant="contained"
-      onClick={() => navigate('/subjects')}
-      startIcon={<ArrowBack />}
-      sx={{
-        bgcolor: 'primary.main',
-        '&:hover': { bgcolor: 'primary.dark' },
-        textTransform: 'none',
-        fontWeight: 'bold',
-        px: 3,
-        py: 1
-      }}
-      >
-      Back
-      </Button>
-      
-      <Button
-      variant="contained"
-      onClick={downloadConfig}
-      startIcon={<Download />}
-      disabled={taskBoxes.length === 0}
-      sx={{
-        bgcolor: 'primary.main',
-        '&:hover': { bgcolor: 'primary.dark' },
-        '&:disabled': {
-          bgcolor: 'action.disabledBackground',
-          color: 'grey.600'
-        },
-        textTransform: 'none',
-        fontWeight: 'bold',
-        px: 3,
-        py: 1
-      }}
-      >
-      Config
-      </Button>
-      
-      <Button
-      variant="contained"
-      onClick={moveToNextScreen}
-      endIcon={<NavigateNext />}
-      disabled={taskBoxes.length === 0}
-      sx={{
-        bgcolor: 'primary.main',
-        '&:hover': { bgcolor: 'primary.dark' },
-        '&:disabled': {
-          bgcolor: 'action.disabledBackground',
-          color: 'grey.600'
-        },
-        textTransform: 'none',
-        fontWeight: 'bold',
-        px: 3,
-        py: 1
-      }}
-      >
-      Proceed
-      </Button>
+    <div className="flex px-4 items-center justify-between bg-zinc-900 z-1 shadow-lg py-1 relative">
+      <Typography className="text-gray-100">
+        {title}
+      </Typography>
+
+      <div className="flex gap-3 items-center">
+        <Tooltip arrow title="Go Back">
+          <NavigateBefore
+            onClick={() => navigate('/subjects')}
+            className="cursor-pointer text-white hover:text-gray-300"
+            fontSize="medium"
+          />
+        </Tooltip>
+
+        <Tooltip arrow title="Download Config">
+          <Download
+            onClick={boundingBoxes.length === 0 ? undefined : downloadConfig}
+            className={`cursor-pointer ${boundingBoxes.length === 0 ? 'text-gray-500 cursor-not-allowed' : 'text-white hover:text-gray-300'}`}
+            fontSize="small"
+          />
+        </Tooltip>
+        
+        <Tooltip arrow title="Go Forward">
+          <NavigateNext
+            onClick={boundingBoxes.length === 0 ? undefined : moveToNextScreen}
+            className={`cursor-pointer ${boundingBoxes.length === 0 ? 'text-gray-500 cursor-not-allowed' : 'text-white hover:text-gray-300'}`}
+            fontSize="medium"
+          />
+        </Tooltip>
       </div>
-    )}
     </div>
   );
 };

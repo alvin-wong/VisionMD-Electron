@@ -12,15 +12,17 @@ const taskSelectionFiles = import.meta.glob(
 
 // 2) Your existing list of legacy tasks
 const taskOptions = [
-  { label: 'Gait', value: 'Gait' },
-  { label: 'Finger Tap Left', value: 'Finger Tap Left' },
-  { label: 'Finger Tap Right', value: 'Finger Tap Right' },
-  { label: 'Hand Movement Left', value: 'Hand Movement Left' },
-  { label: 'Hand Movement Right', value: 'Hand Movement Right' },
-  { label: 'Toe tapping Left', value: 'Toe tapping Left' },
-  { label: 'Toe tapping Right', value: 'Toe tapping Right' },
-  { label: 'Leg agility Left', value: 'Leg agility Left' },
-  { label: 'Leg agility Right', value: 'Leg agility Right' },
+  { value: 'Gait', label: 'Gait' },
+  { value: 'Finger Tap Left', label: 'Finger Tap Left' },
+  { value: 'Finger Tap Right', label: 'Finger Tap Right' },
+  { value: 'Hand Movement Left', label: 'Hand Movement Left' },
+  { value: 'Hand Movement Right', label: 'Hand Movement Right' },
+  { value: 'Toe tapping Left', label: 'Toe tapping Left' },
+  { value: 'Toe tapping Right', label: 'Toe tapping Right' },
+  { value: 'Leg agility Left', label: 'Leg agility Left' },
+  { value: 'Leg agility Right', label: 'Leg agility Right' },
+  { value: 'Hand Tremor Left', label: 'Hand Tremor Left Elbow Extended' },
+  { value: 'Hand Tremor Right', label: 'Hand Tremor Right Elbow Extended' },
 
   // { label: 'Dynamic tremor', value: 'Dynamic tremor' },
   // { label: 'Mouth Opening', value: 'Mouth Opening' },
@@ -40,8 +42,8 @@ const taskOptions = [
 
 
 const errors = [];
-taskOptions.forEach(({ label }) => {
-  const fileName = label.toLowerCase().replace(/\s+/g, '_') + '.jsx';
+taskOptions.forEach(({ value }) => {
+  const fileName = value.toLowerCase().replace(/\s+/g, '_') + '.jsx';
   const hasSelection = Object.keys(taskSelectionFiles).some((p) =>
     p.endsWith(`/Tasks/${fileName}`)
   );
@@ -51,12 +53,12 @@ taskOptions.forEach(({ label }) => {
 
   if (!hasSelection) {
     errors.push(
-      `🛑 Startup check failed: missing “${fileName}” in src/pages/TaskSelection/Tasks. Task selection tab is not defined for label: “${label}”.`
+      `Startup check failed: missing “${fileName}” in src/pages/TaskSelection/Tasks. Task selection tab is not defined for value: “${value}”.`
     );
   }
   if (!hasDetails) {
     errors.push(
-      `🛑 Startup check failed: missing “${fileName}” in src/pages/TaskDetails/Tasks/. Task analysis is not defined for label: “${label}”.`
+      `Startup check failed: missing “${fileName}” in src/pages/TaskDetails/Tasks/. Task analysis is not defined for value: “${value}”.`
     );
   }
 });

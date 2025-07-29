@@ -2,57 +2,27 @@
 import React, { useEffect, useRef, useState } from 'react';
 import WaveSurfer from 'wavesurfer.js';
 import RegionsPlugin from 'wavesurfer.js/plugins/regions';
-import HoverPlugin from 'wavesurfer.js/plugins/hover';
 import Slider from '@mui/material/Slider';
-import debounce from 'lodash/debounce';
 
 const TasksWaveForm = ({
-  setTasks,
   videoRef,
   tasks,
-  taskBoxes,
-  setTaskBoxes,
+  onTaskCreate,
+  onTaskChange,
   isVideoReady,
-  setTasksReady,
-  tasksReady,
 }) => {
   const waveformRef = useRef(null);
   const waveSurferRef = useRef(null);
   const regionsPluginRef = useRef(null);
-  const ignoreRegionEventsRef = useRef(false);
+  const ignoreRef = useRef(false);
   const tasksRef = useRef(tasks);
 
-  const [waveLoading, setWaveLoading] = useState(false);
-  const [loadPercent, setLoadPercent] = useState(0);
   const [waveSurferReady, setWaveSurferReady] = useState(false);
-
-  const redrawRegions = () => {
-    if (!regionsPluginRef.current) return;
-
-    ignoreRegionEventsRef.current = true;
-    regionsPluginRef.current.clearRegions();
-
-    tasksRef.current.forEach(task => {
-      regionsPluginRef.current.addRegion({
-        id: task.id,
-        start: task.start,
-        end: task.end,
-        content: `${task.name} #${task.id}`,
-        drag: true,
-        resize: true,
-      });
-    });
-
-    ignoreRegionEventsRef.current = false;
-  };
-  const debouncedRedraw = useRef(debounce(redrawRegions, 120)).current;
-
-
-
   useEffect(() => {
     tasksRef.current = tasks;
-    if (regionsPluginRef.current && waveSurferReady) debouncedRedraw();
-  }, [tasks, waveSurferReady, debouncedRedraw]);
+  }, [tasks]);
+
+  const getHighestId = () => tasksRef.current.reduce((max, t) => Math.max(max, t.id), 0);
 
   useEffect(() => {
     if (!isVideoReady || !videoRef.current) return;
@@ -64,9 +34,9 @@ const TasksWaveForm = ({
 
     const ws = WaveSurfer.create({
       container: waveformRef.current,
-      waveColor: 'violet',
-      progressColor: 'purple',
-      cursorColor: 'navy',
+      waveColor: '#1976d2',
+      progressColor: '#0b397eff',
+      cursorColor: 'gray',
       barWidth: 2,
       barRadius: 3,
       responsive: true,
@@ -78,30 +48,67 @@ const TasksWaveForm = ({
     });
 
     waveSurferRef.current = ws;
-
-    ws.on('loading', percent => {
-      setLoadPercent(percent);
-      setWaveLoading(true);
-    });
-
-    ws.on('ready', () => {
-      setWaveLoading(false);
-      setWaveSurferReady(true);
-
-      const duration = videoRef.current?.duration || 1;
-      ws.zoom(670 / duration);
-    });
-
     regionsPluginRef.current = ws.registerPlugin(RegionsPlugin.create());
-    ws.registerPlugin(HoverPlugin.create());
     regionsPluginRef.current.enableDragSelection({});
+    ws.on('ready', () => {
+      const duration = videoRef.current.duration || 1;
+      ws.zoom(670 / duration);
+      setWaveSurferReady(true);
+    });
 
-    regionsPluginRef.current.on('region-created', handleNewRegion);
-    regionsPluginRef.current.on('region-updated', handleRegionUpdated);
-    regionsPluginRef.current.on('region-update', handleRegionUpdate);
+
+    regionsPluginRef.current.on('region-created', region => {
+      if (ignoreRef.current || region.content) return;
+
+      const start = Number(region.start.toFixed(3));
+      const end = Number(region.end.toFixed(3));
+
+      ignoreRef.current = true;
+      region.remove();
+      ignoreRef.current = false;
+
+      const newTask = {
+        id: getHighestId() + 1,
+        start,
+        end,
+        name: 'Region',
+        data: null,
+      };
+
+      onTaskCreate(newTask);
+      if (videoRef.current) videoRef.current.currentTime = start + 0.05;
+    });
+
+
+    regionsPluginRef.current.on('region-updated', region => {
+      if (ignoreRef.current) return;
+
+      const original = tasksRef.current.find(t => t.id === region.id);
+      if (!original) return;
+
+      const start = Number(region.start.toFixed(3));
+      const end = Number(region.end.toFixed(3));
+      
+      ignoreRef.current = true;
+      region.remove();
+      ignoreRef.current = false;
+
+      const updatedTask = {
+        ...original,
+        start,
+        end,
+        data: null,
+      };
+
+      
+      onTaskChange(updatedTask);
+      if (videoRef.current) {
+        videoRef.current.currentTime =
+          Math.abs(original.start - start) > 0.001 ? start + 0.05 : end - 0.05;
+      }
+    });
 
     return () => {
-      debouncedRedraw.cancel();
       ws.destroy();
       waveSurferRef.current = null;
       regionsPluginRef.current = null;
@@ -109,98 +116,44 @@ const TasksWaveForm = ({
     };
   }, [isVideoReady, videoRef]);
 
+  useEffect(() => {
+    if (!waveSurferReady || !regionsPluginRef.current) return;
 
-  const getHighestId = () =>
-    tasksRef.current.reduce((max, t) => Math.max(max, t.id), 0);
+    ignoreRef.current = true;
+    regionsPluginRef.current.clearRegions();
 
-  const handleNewRegion = region => {
-    if (ignoreRegionEventsRef.current || region.content) return;
-
-    const start = Number(region.start.toFixed(3));
-    const end = Number(region.end.toFixed(3));
-    const newId = getHighestId() + 1;
-
-    region.setOptions({ 
-      color: 'rgba(0, 0, 0, 0.0)',
-      resize: false,
+    tasks.forEach(task => {
+      regionsPluginRef.current.addRegion({
+        id: task.id,
+        content: (() => {
+          const label = document.createElement('div');
+          label.textContent = `${task.name} #${task.id}`;
+          label.style.color = '#f3f4f6';
+          label.style.padding = '4px 8px';
+          return label;
+        })(),
+        start: task.start,
+        end: task.end,
+        drag: true,
+        resize: true,
+        color: 'rgba(255, 255, 255, 0.1)'
+      });
     });
-    region.remove();
-    
 
-    const newTask = {
-      id: newId,
-      start,
-      end,
-      name: 'Region',
-      data: null,
-    };
-
-    setTasks(prev => [...prev, newTask]);
-    if (!tasksReady) setTasksReady(true);
-
-    if (videoRef.current) videoRef.current.currentTime = start + 0.05;
-  };
-
-  const handleRegionUpdated = region => {
-    if (ignoreRegionEventsRef.current) return;
-
-    const start = Number(region.start.toFixed(3));
-    const end = Number(region.end.toFixed(3));
-    const original = tasksRef.current.find(t => t.id === region.id);
-    if (!original) return;
-
-    const changed =
-      Math.abs(original.start - start) > 0.001 ||
-      Math.abs(original.end - end) > 0.001;
-
-    if (changed) {
-      setTaskBoxes(prev => prev.filter(b => Number(b.id) !== region.id));
-      setTasks(prev =>
-        prev.map(t =>
-          t.id === region.id ? { ...t, start, end, data: null } : t,
-        ),
-      );
-    }
-
-    if (videoRef.current) {
-      videoRef.current.currentTime =
-        Math.abs(original.start - start) > 0.001 ? start + 0.05 : end - 0.05;
-    }
-  };
-
-  const handleRegionUpdate = region => {
-    if (ignoreRegionEventsRef.current) return;
-    if (!videoRef.current) return;
-
-    const start = Number(region.start.toFixed(3));
-    const end = Number(region.end.toFixed(3));
-    const original = tasksRef.current.find(t => t.id === region.id);
-
-    if (!original) return;
-
-    if (Math.abs(original.start - start) > 0.001) {
-      videoRef.current.currentTime = start;
-    } else if (Math.abs(original.end - end) > 0.001) {
-      videoRef.current.currentTime = end;
-    }
-  };
-
+    ignoreRef.current = false;
+  }, [tasks, waveSurferReady]);
 
   const handleZoom = (_, zoom) => {
-    if (!waveSurferReady || waveLoading) return;
+    if (!waveSurferReady) return;
     const duration = videoRef.current?.duration || 1;
     waveSurferRef.current.zoom((670 / duration) * zoom);
   };
 
   return (
-    <div className="flex flex-col gap-2 justify-center items-center w-full border-t-2 pt-4 px-2">
-      {isVideoReady && (
-        <div className="w-full flex items-center justify-between px-8">
-          <div className="font-semibold text-center">
-            {waveLoading
-              ? `Loading Waveform: ${Math.round(loadPercent)}%…`
-              : 'Waveform'}
-          </div>
+    <div className="flex flex-col justify-center items-center w-full pt-6 p-2">
+      <div className="flex flex-col w-full p-4 rounded-lg bg-[#333338]">
+        <div className="w-full flex items-center justify-between pb-2 border-b-2 border-zinc-500">
+          <div className="text-left text-gray-100">Waveform</div>
           <Slider
             orientation="horizontal"
             min={1}
@@ -213,12 +166,12 @@ const TasksWaveForm = ({
             valueLabelFormat={v => `${v}x`}
           />
         </div>
-      )}
-      <div
-        id="waveform"
-        className="w-full px-8 py-2 overflow-x-auto"
-        ref={waveformRef}
-      />
+        <div
+          id="waveform"
+          className="w-full py-2 overflow-x-auto"
+          ref={waveformRef}
+        />
+      </div>
     </div>
   );
 };

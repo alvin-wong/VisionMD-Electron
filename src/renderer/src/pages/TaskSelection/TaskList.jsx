@@ -6,20 +6,20 @@ import Default from './Tasks/default'
 
 const Header = ({ resetTaskSelection }) => {
   return (
-    <div className="flex flex-col border-b-2 py-2 font-semibold border-gray-300">
-      Tasks
+    <div className="flex flex-col border-b-2 py-2 text-gray-100 border-zinc-500">
+      Task Selection
     </div>
   );
 };
 
 const selectedTaskFiles = Object.fromEntries(
-  taskOptions.map(({ label }) => {
-    const fileName = label.toLowerCase().replace(/\s+/g, '_');
+  taskOptions.map(({ value }) => {
+    const fileName = value.toLowerCase().replace(/\s+/g, '_');
     const module = import.meta.glob('./Tasks/*.jsx', { eager: true });
     const match = Object.entries(module).find(([path]) =>
       path.endsWith(`/${fileName}.jsx`)
     );
-    return [label, match ? match[1].default : null];
+    return [value, match ? match[1].default : null];
   }).filter(([_, component]) => component)
 );
 
@@ -55,45 +55,63 @@ const TaskList = ({
     if (videoRef.current) videoRef.current.currentTime = time;
   };
 
+  const typeCounts = {};
+  tasks.map((task, i) => {
+    const taskType = task.name;
+    const typeIndex = typeCounts[taskType] ?? 0;
+    typeCounts[taskType] = typeIndex + 1;
+  })
+
   return (
-    <div className="flex flex-col gap-2 p-4 h-full overflow-y-auto rounded-lg bg-gray-100 shadow-inner">
+    <div className="flex flex-col gap-2 p-4 py-2 h-full overflow-y-auto rounded-lg bg-[#333338] shadow-inner">
       <Header resetTaskSelection={resetTaskSelection} />
 
-      {/* Task Settings and Options Here */}
       <div className="flex flex-col">
         {tasks.length > 0 ? (
-          tasks.map((task, index) => {
-            const TaskComponent = selectedTaskFiles[task.name];
-            if (!TaskComponent) {
-              return(
-                <Default
-                  key={index}
-                  task={task}
-                  onFieldChange={onFieldChange}
-                  onTaskDelete={onTaskDelete}
-                  onTimeMark={onTimeMark}
-                  onTimeClick={onTimeClick}
-                  options={options}
-                  setOptions={setOptions}
-                />
-              )
-            } else {
-              return (
-                <TaskComponent
-                  key={index}
-                  task={task}
-                  onFieldChange={onFieldChange}
-                  onTaskDelete={onTaskDelete}
-                  onTimeMark={onTimeMark}
-                  onTimeClick={onTimeClick}
-                  options={options}
-                  setOptions={setOptions}
-                />
-              );
-            }
-          })
+          (() => {
+            const typeCounts = {};
+            
+            return tasks.map((task, index) => {
+              const taskType = task.name;
+              
+              const TaskComponent = selectedTaskFiles[taskType];
+
+              const taskTypeIndex = typeCounts[taskType] ?? 0;
+              typeCounts[taskType] = taskTypeIndex + 1;
+
+              if (!TaskComponent) {
+                return (
+                  <Default
+                    key={index}
+                    task={task}
+                    taskTypeIndex={taskTypeIndex}
+                    onFieldChange={onFieldChange}
+                    onTaskDelete={onTaskDelete}
+                    onTimeMark={onTimeMark}
+                    onTimeClick={onTimeClick}
+                    options={options}
+                    setOptions={setOptions}
+                  />
+                );
+              } else {
+                return (
+                  <TaskComponent
+                    key={index}
+                    task={task}
+                    taskTypeIndex={taskTypeIndex}
+                    onFieldChange={onFieldChange}
+                    onTaskDelete={onTaskDelete}
+                    onTimeMark={onTimeMark}
+                    onTimeClick={onTimeClick}
+                    options={options}
+                    setOptions={setOptions}
+                  />
+                );
+              }
+            });
+          })()
         ) : (
-          <div className="text-center text-gray-500 py-4">No tasks added yet</div>
+          <div className="text-center text-gray-100 py-4">No tasks added yet</div>
         )}
       </div>
     </div>

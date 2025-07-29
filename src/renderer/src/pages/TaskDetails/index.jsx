@@ -33,8 +33,6 @@ const TaskDetails = () => {
     boundingBoxes,
     setBoundingBoxes,
     fps,
-    taskBoxes,
-    setTaskBoxes,
     tasks,
     setTasks,
     persons,
@@ -106,7 +104,7 @@ const TaskDetails = () => {
     const videoBlob = await fetch(videoURL).then(r => r.blob());
 
     const taskData = tasks[taskIndex];
-    const chosenTaskBox = taskBoxes.find(box => box.id === taskData.id);
+    const chosenTaskBox = tasks.find(box => box.id === taskData.id);
     const taskBoxCords = {
       x: chosenTaskBox.x,
       y: chosenTaskBox.y,
@@ -204,17 +202,15 @@ const TaskDetails = () => {
     });
   };
 
-  /* Tailwind button base */
   const btn =
-    'bg-[#1976d2] hover:bg-[#1565c0] text-white font-medium px-3 py-1 ' +
+    'bg-[#1976d2] hover:bg-[#1565c0] text-white px-3 py-1 ' +
     'rounded-md inline-flex items-center gap-1 ' +
-    'disabled:opacity-50 disabled:cursor-not-allowed';
+    'disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap';
 
   return (
     <div className="flex flex-col h-screen">
       <div className="flex flex-1 overflow-hidden">
-        {/* ─── Video Player ───────────────────────────── */}
-        <div className="flex-1 min-w-[50%] bg-slate-900">
+        <div className="flex-1 min-w-[50%] h-full bg-slate-900">
           <VideoPlayer
             videoURL={videoURL}
             videoData={videoData}
@@ -222,22 +218,19 @@ const TaskDetails = () => {
             screen="taskDetails"
             boundingBoxes={boundingBoxes}
             setBoundingBoxes={setBoundingBoxes}
-            taskBoxes={taskBoxes}
             fps={fps}
             persons={persons}
             setVideoReady={setVideoReady}
             setVideoData={setVideoData}
             fileName={fileName}
             landMarks={tasks[selectedTask]?.data?.landMarks}
-            setTaskBoxes={setTaskBoxes}
             selectedTask={selectedTask}
             tasks={tasks}
             setTasks={setTasks}
           />
         </div>
 
-        {/* ─── Right-hand Pane ───────────────────────── */}
-        <div className="flex-1 flex flex-col min-w-[50%] bg-slate-50 overflow-y-auto">
+        <div className="flex-1 flex flex-col min-w-[50%] border-l border-l-zinc-600 bg-zinc-800 overflow-y-auto">
           <HeaderSection
             title="Task Details"
             isVideoReady={videoReady}
@@ -246,13 +239,12 @@ const TaskDetails = () => {
             boundingBoxes={boundingBoxes}
           />
 
-          {/* ─── Toolbar ─────────────────────────────── */}
           <div className="flex items-center justify-center gap-2 mt-2 mb-4">
-            <div className="text-lg font-bold">Current task&nbsp;-</div>
+            <div className="text-gray-100">Current task - </div>
 
             {/* task selector */}
             <select
-              className="text-lg border border-gray-300 rounded-md px-2 py-1"
+              className="border border-zinc-600 bg-zinc-800 text-gray-100 rounded-md px-2 py-1"
               value={selectedTask}
               onChange={e => setSelectedTask(Number(e.target.value))}
             >
@@ -269,7 +261,7 @@ const TaskDetails = () => {
               Reset
             </button>
 
-            {/* ── Split Download button ── */}
+            {/*  Split Download button */}
             <div className="relative inline-flex" ref={dropdownRef}>
               {/* main download */}
               <button
@@ -294,7 +286,7 @@ const TaskDetails = () => {
               {dropdownOpen && (
                 <div className="absolute right-0 top-full mt-1 w-40 bg-white border border-gray-200 rounded-md shadow-md z-20">
                   <button
-                    className="w-full text-left px-4 py-2 hover:bg-gray-100 disabled:opacity-50"
+                    className="w-full text-center px-2 py-1 hover:bg-gray-100 disabled:opacity-50"
                     onClick={() => {
                       downloadAllTasks();
                       setDropdownOpen(false);
@@ -319,14 +311,13 @@ const TaskDetails = () => {
             {analyzingAll && (
               <CircularProgress
                 size={28}
-                sx={{ color: '#2563eb' /* blue-600 */ }}
+                sx={{ color: '#2563eb'}}
               />
             )}
           </div>
 
-          {/* ─── Body ────────────────────────────────── */}
           {!tasks[selectedTask]?.data ? (
-            <div className="flex justify-center items-center h-full flex-col gap-4 w-full px-10 flex-1 py-4 overflow-y-scroll">
+            <div className="flex justify-center items-center text-gray-100 h-full flex-col gap-4 w-full px-10 flex-1 py-4 overflow-y-scroll">
               <div>Analyze the task</div>
               <button
                 className={`${btn} text-base`}
@@ -342,7 +333,6 @@ const TaskDetails = () => {
                 boundingBoxes={boundingBoxes}
                 videoRef={videoRef}
                 tasks={tasks}
-                taskBoxes={taskBoxes}
                 selectedTask={selectedTask}
               />
             </div>
@@ -355,8 +345,8 @@ const TaskDetails = () => {
                   setTasks={setTasks}
                   fileName={fileName}
                   videoRef={videoRef}
-                  startTime={taskBoxes[selectedTask].start}
-                  endTime={taskBoxes[selectedTask].end}
+                  startTime={tasks[selectedTask].start}
+                  endTime={tasks[selectedTask].end}
                   handleJSONUpload={handleProcessing}
                 />
               )}
