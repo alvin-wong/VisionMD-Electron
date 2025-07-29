@@ -153,7 +153,7 @@ const InteractiveOverlays = ({
     }
     setTasks((prevBoxes) =>
       prevBoxes.map((task, idx) =>
-        idx === taskIndex ? { ...task, x: newX, y: newY, width: newWidth, height: newHeight } : task
+        idx === taskIndex ? { ...task, x: newX, y: newY, box_width: newWidth, box_height: newHeight } : task
       )
     );
   };
@@ -331,8 +331,8 @@ const InteractiveOverlays = ({
           <rect
             x={taskToRender.x}
             y={taskToRender.y}
-            width={taskToRender.width}
-            height={taskToRender.height}
+            width={taskToRender.box_width}
+            height={taskToRender.box_height}
             stroke="green"
             strokeWidth={strokeThickness}
             fill="none"
@@ -344,8 +344,8 @@ const InteractiveOverlays = ({
             <ResizeHandles
               x={taskToRender.x}
               y={taskToRender.y}
-              width={taskToRender.width}
-              height={taskToRender.height}
+              width={taskToRender.box_width}
+              height={taskToRender.box_height}
               handleSize={strokeThickness}
               onResize={handleTaskResizeStart}
               item={taskToRender}
