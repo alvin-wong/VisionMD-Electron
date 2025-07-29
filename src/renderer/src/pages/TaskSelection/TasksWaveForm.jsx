@@ -61,14 +61,13 @@ const TasksWaveForm = ({
       if (ignoreRef.current || region.content) return;
       const start = Number(region.start.toFixed(3));
       const end = Number(region.end.toFixed(3));
+
       // DO NOT REMOVE: HACK NEEDED TO REMOVE GHOST REGIONS
       region.setOptions({
         color: 'rgba(0,0,0,0)',
         start: NaN,
         end: NaN
       });
-
-
       ignoreRef.current = true;
       region.remove()
       ignoreRef.current = false;
