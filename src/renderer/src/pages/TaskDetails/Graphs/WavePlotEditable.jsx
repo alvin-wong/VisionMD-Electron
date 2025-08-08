@@ -571,7 +571,7 @@ const WavePlotEditable = ({
             },
           }}
           layout={{
-            plot_bgcolor: '#333338',
+            plot_bgcolor: '#39393F',
             paper_bgcolor: '#333338',
             shapes,
             dragmode: 'pan',
@@ -579,9 +579,9 @@ const WavePlotEditable = ({
               title: {
                 text: 'Time [s]',
                 standoff: 20,
-                font: { color: '#f3f4f6' },
+                font: { color: '#f6f3f3ff' },
               },
-              gridcolor: '#3f3f46',
+              gridcolor: '#3F3F46',
               tickfont: { color: '#f3f4f6' },
               range: [startTime, endTime],
               fixedrange: false,
@@ -592,7 +592,7 @@ const WavePlotEditable = ({
                 standoff: 20,
                 font: { color: '#f3f4f6' },
               },
-              gridcolor: '#3f3f46',
+              gridcolor: '#3F3F46',
               tickfont: { color: '#f3f4f6' },
               automargin: true,
               fixedrange: false,

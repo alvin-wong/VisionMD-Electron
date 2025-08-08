@@ -264,8 +264,7 @@ const InteractiveOverlays = ({
         landmarks: updatedLandmarks,
         ...data
       });
-      console.log("Upload Task Data", data);
-      console.log("Upload Json", JSON.parse(jsonData));
+      console.log("Uploaded Json", JSON.parse(jsonData));
       const uploadData = new FormData();
       uploadData.append('json_data', jsonData);
       const response = await fetch('http://localhost:8000/api/update_landmarks/', {

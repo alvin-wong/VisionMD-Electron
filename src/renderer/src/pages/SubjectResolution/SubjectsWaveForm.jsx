@@ -99,7 +99,7 @@ const SubjectsWaveForm = ({ videoRef, isVideoReady }) => {
         </div>
         <div
           id="waveform"
-          className="w-full py-2 overflow-x-auto" 
+          className="w-full py-2 overflow-x-auto bg-zinc-700" 
           ref={waveformRef}
         />
       </div>

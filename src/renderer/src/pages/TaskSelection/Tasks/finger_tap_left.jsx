@@ -14,21 +14,17 @@ const FingerTapLeft = ({
   options,
 }) => {
   const [open, setOpen] = useState(true);
-  const renderCount = useRef(0);
-  renderCount.current += 1;
 
   useEffect(() => {
-    console.log(`Rendered ${renderCount.current} times`);
-  });
-
-  const handleTaskChange = selectedTask => {
-    onFieldChange(selectedTask.value, 'name', task);
-  };
+    if (!task.norm_strategy) {
+      onFieldChange('INDEXSIZE', 'norm_strategy', task);
+    }
+  }, []);
 
   return (
     <div
       tabIndex={-1}
-      className="border-2 border-zinc-600 text-gray-100 rounded-lg mb-4 overflow-hidden min-h-[50px]
+      className="border-2 border-zinc-600 bg-zinc-700 text-gray-100 rounded-lg mb-4 overflow-hidden min-h-[50px]
                 focus:border-blue-500 focus:outline-none
                 transition-all duration-500 ease-in-out"
       key={task.id}
@@ -58,15 +54,15 @@ const FingerTapLeft = ({
 
       {/*  DETAILS PANEL  */}
       <Collapse in={open} timeout="auto" unmountOnExit className="border-t-2 border-zinc-600">
-        <div className="flex flex-row items-center flex-wrap justify-between px-3 py-2 bg-transparent gap-y-4 rounded-b-lg">
+        <div className="flex flex-row items-center flex-nowrap justify-between px-3 py-2 bg-transparent gap-y-4 rounded-b-lg">
           
           {/* Task selector */}
           <div className="relative whitespace-nowrap">
             <label className="inline whitespace-nowrap ">Task: </label>
             <select
-              className="p-2 border rounded-lg bg-[#333338] text-gray-100 border-zinc-600"
+              className="p-2 border rounded-lg bg-zinc-700 text-gray-100 border-zinc-600"
               value={task.name}
-              onChange={(e) => handleTaskChange({ value: e.target.value, label: e.target.value })}
+              onChange={(e) => onFieldChange(e.target.value, 'name', task)}
             >
               <option value="" hidden>Select task</option>
               {options.map((option) => (
@@ -76,8 +72,6 @@ const FingerTapLeft = ({
               ))}
             </select>
           </div>
-
-
 
           {/* Start time */}
           <div className="flex items-center gap-x-1">
@@ -114,6 +108,23 @@ const FingerTapLeft = ({
             <IconButton size="small" onClick={e => { e.stopPropagation(); onTimeMark('end', task); }}>
               <TouchApp className='text-gray-100' fontSize="small" />
             </IconButton>
+          </div>
+        </div>
+          
+        <div className="flex flex-row items-center flex-nowrap justify-between px-3 py-2 bg-transparent gap-y-4 rounded-b-lg">
+          {/* Normalization selector */}
+          <div className="relative whitespace-nowrap">
+            <label className="inline whitespace-nowrap ">Normalization: </label>
+              <select
+                className="p-2 border rounded-lg bg-zinc-700 text-gray-100 border-zinc-600"
+                value={task?.norm_strategy? task.norm_strategy: "INDEXSIZE"}
+                onChange={e => onFieldChange(e.target.value, 'norm_strategy', task)}
+              >
+                <option value="INDEXSIZE">Index finger size</option>
+                <option value="THUMBSIZE">Thumb size</option>
+                <option value="PALMSIZE">Palm size</option>
+                <option value="MAXAMPLITUDE">Max amplitude</option>
+              </select>
           </div>
         </div>
       </Collapse>

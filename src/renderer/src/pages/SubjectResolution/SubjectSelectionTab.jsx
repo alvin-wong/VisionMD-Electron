@@ -5,11 +5,7 @@ import JSONUploadDialog from './SubjectJSONUploadDialog';
 
 
 const PersonRow = ({ person, onPlay, onToggleSubject }) => (
-  <li
-    className={`flex items-center justify-between p-2 border bg-transparent border-zinc-600 rounded-lg transition-colors duration-150${
-      person.isSubject ? 'hover:bg-zinc-700 text-gray-100' : 'hover:bg-zinc-700 text-gray-100'
-    }`}
-  >
+  <li className='flex items-center justify-between p-2 border border-zinc-600 rounded-lg bg-zinc-700 hover:bg-zinc-600 text-gray-100 transition-colors duration-150'>
     <div className='flex flex-row justify-between w-full'>
       <div className="flex items-center">
         <PlayCircleOutline onClick={() => onPlay(person.timestamp)} className="cursor-pointer" />

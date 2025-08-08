@@ -116,6 +116,22 @@ const HandMovementRight = ({
             </IconButton>
           </div>
         </div>
+        <div className="flex flex-row items-center flex-nowrap justify-between px-3 py-2 bg-transparent gap-y-4 rounded-b-lg">
+          {/* Normalization selector */}
+          <div className="relative whitespace-nowrap">
+            <label className="inline whitespace-nowrap ">Normalization: </label>
+              <select
+                className="p-2 border rounded-lg bg-[#333338] text-gray-100 border-zinc-600"
+                value={task?.norm_strategy? task.norm_strategy: "INDEXSIZE"}
+                onChange={e => onFieldChange(e.target.value, 'norm_strategy', task)}
+              >
+                <option value="INDEXSIZE">Index finger size</option>
+                <option value="THUMBSIZE">Thumb size</option>
+                <option value="PALMSIZE">Palm size</option>
+                <option value="MAXAMPLITUDE">Max amplitude</option>
+              </select>
+          </div>
+        </div>
       </Collapse>
     </div>
   );
