@@ -87,7 +87,6 @@ const VideoPlayer = ({
     setIsPlaying(!vid.paused);
 
     const handleUpdate = () => {
-      console.log("running")
       if (vid.currentTime >= end - 0.05) {
         vid.pause();                      
         vid.currentTime = start;

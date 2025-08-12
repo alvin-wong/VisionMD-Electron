@@ -148,7 +148,7 @@ const HandTremorRight = ({
 
       {/* Sensor Width (mm) */}
       <div className="py-1.5 flex justify-between items-center">
-        <label className="text-gray-100">Sensor Width (mm):</label>
+        <label className="text-gray-100">Sensor Pixel Width (µm/pixels):</label>
         <div>
           <input
             type="number"
@@ -162,7 +162,7 @@ const HandTremorRight = ({
           />
           <Tooltip
             arrow
-            title="Enter the sensor width (mm) of the video camera. (Optional)"
+            title="Enter the sensor pixel width (µm/pixels) of the video camera. (Optional)"
           >
             <HelpOutlineIcon className="ml-1 text-gray-100 cursor-pointer" fontSize="small" />
           </Tooltip>
@@ -171,7 +171,7 @@ const HandTremorRight = ({
 
       {/* Sensor Height (mm) */}
       <div className="py-1.5 flex justify-between items-center">
-        <label className="text-gray-100">Sensor Height (mm):</label>
+        <label className="text-gray-100">Sensor Pixel Height (µm/pixels):</label>
         <div>
           <input
             type="number"
@@ -185,7 +185,7 @@ const HandTremorRight = ({
           />
           <Tooltip
             arrow
-            title="Enter the sensor height (mm) of the video camera. (Optional)"
+            title="Enter the sensor pixel height (µm/pixels) of the video camera. (Optional)"
           >
             <HelpOutlineIcon className="ml-1 text-gray-100 cursor-pointer" fontSize="small" />
           </Tooltip>
@@ -232,27 +232,29 @@ const HandTremorRight = ({
               </Tooltip>
             </div>
           </div>
-          <Collapse in={showIntrinsic} timeout="auto" unmountOnExit>
-            <div className="mt-2 grid gap-1" style={{ gridTemplateColumns: `repeat(3, minmax(0, 1fr))` }}>
-              {intrinsicMatrix.map((row, i) =>
-                row.map((val, j) => (
-                  <input
-                    key={`int-${i}-${j}`}
-                    type="number"
-                    step="any"
-                    className="border border-zinc-600 bg-transparent rounded-lg p-1 w-16 text-gray-100 text-center [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [&input[type=number]]:appearance-none"
-                    value={val}
-                    onChange={e => {
-                      const newVal = e.target.value === '' ? '' : Number(e.target.value);
-                      const newMatrix = intrinsicMatrix.map(r => [...r]);
-                      newMatrix[i][j] = newVal;
-                      setGlobalIntrinsicMatrix(onFieldChange, newMatrix, task);
-                    }}
-                  />
-                ))
-              )}
-            </div>
-          </Collapse>
+          <div className='flex justify-center'>
+            <Collapse in={showIntrinsic} timeout="auto" unmountOnExit>
+              <div className="mt-2 flex place-items-center grid gap-2 inline-grid" style={{ gridTemplateColumns: `repeat(3, auto)` }}>
+                {intrinsicMatrix.map((row, i) =>
+                  row.map((val, j) => (
+                    <input
+                      key={`int-${i}-${j}`}
+                      type="number"
+                      step="any"
+                      className="border border-zinc-600 bg-transparent rounded-lg p-1 w-16 text-gray-100 text-center [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [&input[type=number]]:appearance-none"
+                      value={val}
+                      onChange={e => {
+                        const newVal = e.target.value === '' ? '' : Number(e.target.value);
+                        const newMatrix = intrinsicMatrix.map(r => [...r]);
+                        newMatrix[i][j] = newVal;
+                        setGlobalIntrinsicMatrix(onFieldChange, newMatrix, task);
+                      }}
+                    />
+                  ))
+                )}
+              </div>
+            </Collapse>
+          </div>
         </div>
 
         {/* Extrinsic Matrix Section */}
@@ -270,29 +272,31 @@ const HandTremorRight = ({
               >
                 <HelpOutlineIcon className="ml-1 text-gray-100 cursor-pointer" fontSize="small" />
               </Tooltip>
-            </div>          
-          </div>
-          <Collapse in={showExtrinsic} timeout="auto" unmountOnExit>
-            <div className="mt-2 grid gap-2" style={{ gridTemplateColumns: `repeat(4, minmax(0, 1fr))` }}>
-              {extrinsicMatrix.map((row, i) =>
-                row.map((val, j) => (
-                  <input
-                    key={`ext-${i}-${j}`}
-                    type="number"
-                    step="any"
-                    className="border border-zinc-600 bg-transparent rounded-lg p-1 w-16 text-gray-100 text-center [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [&input[type=number]]:appearance-none"
-                    value={val}
-                    onChange={e => {
-                      const newVal = e.target.value === '' ? '' : Number(e.target.value);
-                      const newMatrix = extrinsicMatrix.map(r => [...r]);
-                      newMatrix[i][j] = newVal;
-                      setGlobalExtrinsicMatrix(onFieldChange, newMatrix, task);
-                    }}
-                  />
-                ))
-              )}
             </div>
-          </Collapse>
+          </div>
+          <div className='flex justify-center'>
+            <Collapse in={showExtrinsic} timeout="auto" unmountOnExit>
+              <div className="mt-2 grid gap-2 place-items-center inline-grid" style={{ gridTemplateColumns: `repeat(4, minmax(0, 1fr))` }}>
+                {extrinsicMatrix.map((row, i) =>
+                  row.map((val, j) => (
+                    <input
+                      key={`ext-${i}-${j}`}
+                      type="number"
+                      step="any"
+                      className="border border-zinc-600 bg-transparent rounded-lg p-1 w-16 text-gray-100 text-center [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [&input[type=number]]:appearance-none"
+                      value={val}
+                      onChange={e => {
+                        const newVal = e.target.value === '' ? '' : Number(e.target.value);
+                        const newMatrix = extrinsicMatrix.map(r => [...r]);
+                        newMatrix[i][j] = newVal;
+                        setGlobalExtrinsicMatrix(onFieldChange, newMatrix, task);
+                      }}
+                    />
+                  ))
+                )}
+              </div>
+            </Collapse>
+          </div>
         </div>
 
         {/* Buttons */}

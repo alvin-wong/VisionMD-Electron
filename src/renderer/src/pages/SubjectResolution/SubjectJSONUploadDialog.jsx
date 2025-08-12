@@ -47,11 +47,8 @@ export default function JSONUploadDialog({ dialogOpen, setDialogOpen, handleJSON
 
   const fetchBoundingBoxes = async (content) => {
     try {
-      const uploadData = new FormData();
-      uploadData.append('video', content);
       const response = await fetch(`http://localhost:8000/api/get_bounding_boxes/?id=${videoId}`, {
-        method: 'POST',
-        body: uploadData,
+        method: 'GET',
       });
       if (!response.ok) {
         throw new Error('Server responded with an error!');
@@ -182,6 +179,8 @@ export default function JSONUploadDialog({ dialogOpen, setDialogOpen, handleJSON
               >
                 Upload JSON File
               </label>
+            </div>
+            <div className={fileError ? `mt-8` : ``}>
               {fileError && <Typography color="error">{fileError}</Typography>}
             </div>
           </div>

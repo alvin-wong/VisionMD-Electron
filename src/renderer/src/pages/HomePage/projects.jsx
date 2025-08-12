@@ -6,23 +6,25 @@ import { Plus, Pencil } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { VideoContext } from "../../contexts/VideoContext";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 dayjs.extend(relativeTime);
 
-const fetchVideos = async () => {
-  try {
-    const res = await fetch(`${BASE_URL}/api/get_video_data/`);
-    if (!res.ok) {
-      console.error('API returned non-OK', res.status, await res.text());
-      return;
+const fetchVideos = async (url, maxDelay = 300000) => {
+  let delay = 1000;
+  while (true) {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error();
+      return await res.json();
+    } catch {
+      await new Promise(res => setTimeout(res, delay));
+      delay = Math.min(delay * 2, maxDelay);
     }
-    return res.json();
-  } catch (err) {
-    console.error('Network or parse error', err);
-    throw new Error('Fetching video data failed');
   }
-}
+};
+
 
 const uploadVideo = async (file) => {
   const form = new FormData();
@@ -198,20 +200,19 @@ const VideoTile = ({ video, setVideos }) => {
 
 export default function Projects() {
   const [videos, setVideos] = useState(null);
-  const fileInputRef        = useRef();
-  console.log("videos", videos)
+  const [loading, setLoading] = useState(true);
+  const fileInputRef = useRef();
+  const fetchedProjects = useRef(false);
 
   useEffect(() => {
-    const loadVideos = async () => {
-      try {
-        const all_videos_data = await fetchVideos();
-        setVideos(all_videos_data);
-      } catch (err) {
-        console.error("Error fetching videos:", err);
-      }
+    if (fetchedProjects.current == false) {
+      fetchVideos(`${BASE_URL}/api/get_video_data/`)
+        .then(setVideos)
+        .catch(console.error)
+        .finally(() => setLoading(false));
     }
-
-    loadVideos();
+    
+    fetchedProjects.current = true
   }, []);
 
   const handleAddClick = () => fileInputRef.current.click();
@@ -231,8 +232,12 @@ export default function Projects() {
   };
 
   return (
-    <section>
-      
+    <div className='h-full'>
+      {loading && !videos && (
+        <div className="flex items-center justify-center h-full">
+          <CircularProgress className='my-4' size={64} />
+        </div>
+      )}
       {/* Hidden input for video uploading*/}
       <input
         ref={fileInputRef}
@@ -260,6 +265,6 @@ export default function Projects() {
           </>
         )}
       </div>
-    </section>
+    </div>
   );
 }

@@ -55,7 +55,7 @@ const HeaderSection = ({
             title="Download Config"
           >
           <Download
-            onClick={boundingBoxes.length === 0 ? undefined : downloadConfig}
+            onClick={boundingBoxes?.length === 0 ? undefined : downloadConfig}
             className={`cursor-pointer ${boundingBoxes.length === 0 ? 'text-gray-500 cursor-not-allowed' : 'text-white hover:text-gray-300'}`}
             fontSize="small"
           />
@@ -68,7 +68,7 @@ const HeaderSection = ({
             title="Go Forward"
           >
           <NavigateNext
-            onClick={boundingBoxes.length === 0 ? undefined : moveToNextScreen}
+            onClick={boundingBoxes?.length === 0 ? undefined : moveToNextScreen}
             className={`cursor-pointer ${boundingBoxes.length === 0 ? 'text-gray-500 cursor-not-allowed' : 'text-white hover:text-gray-300'}`}
             fontSize="medium"
           />

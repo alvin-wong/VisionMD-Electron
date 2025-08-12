@@ -77,6 +77,18 @@ const GaitGraphs = ({ selectedTaskIndex, tasks, videoRef }) => {
             height: 320,
             scales: { x: { time: false, min: start, max: end } },
             legend: { show: false },
+            hooks: {
+              drawClear: [
+                (u) => {
+                  const { left, top, width, height } = u.bbox;
+                  const ctx = u.ctx;
+                  ctx.save();
+                  ctx.fillStyle = "#39393F";
+                  ctx.fillRect(left - 15, top - 15, width + 30, height + 30);
+                  ctx.restore();
+                }
+              ]
+            },
             axes: [
               {
                 label: "Time (s)",

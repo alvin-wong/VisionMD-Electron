@@ -17,25 +17,14 @@ export const VideoProvider = ({ children }) => {
     const [fps, setFPS] = useState(null);
 
     const [persons, setPersons] = useState([]);
-    const [boundingBoxes, _setBoundingBoxes] = useState([]);
+    const [boundingBoxes, setBoundingBoxes] = useState([]);
     const [tasks, setTasks] = useState([]);
-    const [taskBoxes, setTaskBoxes] = useState([]);
 
     const [videoReady, setVideoReady] = useState(false);
     const [boxesReady, setBoxesReady] = useState(false);
     const [tasksReady, setTasksReady] = useState(false);
 
-    const videoRef = useRef(null);    
-
-
-    const setBoundingBoxes = (newValue) => {
-        console.groupCollapsed("[TRACE] setBoundingBoxes called");
-        console.log("New value:", newValue);
-        console.trace("Call stack:");
-        console.groupEnd();
-        _setBoundingBoxes(newValue);
-    };
-
+    const videoRef = useRef(null);
     
     // Auto save hook on video context enables auto saving on route changes and refreshes
     useAutoSave(
@@ -43,7 +32,6 @@ export const VideoProvider = ({ children }) => {
         persons,
         boundingBoxes,
         tasks,
-        taskBoxes,
     )
 
     // useEffect for getting video information if video id is updated
@@ -76,12 +64,6 @@ export const VideoProvider = ({ children }) => {
                 setTasks(prev => isEqual(prev, data.tasks) ? prev : data.tasks);
                 setTasksReady(true);
                 }
-
-                // For some reason, setting task boxes breaks the frontend and not setting it makes it work
-                // if(data.taskBoxes) {
-                //     setTaskBoxes(data.taskBoxes)
-                //     setTaskBoxes(true)
-                // }
             } catch (error) {
                 console.error('Error fetching video data on video project opening:\n', error);
             }
@@ -97,7 +79,6 @@ export const VideoProvider = ({ children }) => {
         setPersons([]);
         setBoundingBoxes([]);
         setTasks([]);
-        setTaskBoxes([]);
         setVideoReady(false);
         setBoxesReady(false);
         setTasksReady(false);
@@ -132,8 +113,6 @@ export const VideoProvider = ({ children }) => {
                 setBoundingBoxes,
                 tasks,
                 setTasks,
-                taskBoxes,
-                setTaskBoxes,
                 tasksReady,
                 setTasksReady,
                 persons,
