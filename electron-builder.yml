@@ -34,18 +34,23 @@ mac:
     - mas
   category: public.app-category.utilities
   icon: resources/icon.icns
-  hardenedRuntime: false
-  gatekeeperAssess: false
   minimumSystemVersion: "12.0"
   binaries:
-    - Contents/Frameworks/serve_mac/serve_mac
+    - Contents/backend/serve_mac/serve_mac_container
+    - Contents/backend/serve_mac/serve_mac
   extraFiles:
     - from: pyinstaller_builds/serve_mac
-      to: Frameworks/serve_mac
+      to: backend/serve_mac
       filter:
         - "**/*"
+  extendInfo:
+    ElectronTeamID: 462DH725NR
+
+pkg:
+  installLocation: "/Applications"
 
 mas:
+  appId: com.mealab.visionmd
   entitlements: mac_config/entitlements.mac.plist
   entitlementsInherit: mac_config/entitlements.mac.inherit.plist
-  provisioningProfile: mac_config/visionmd-mas.provisionprofile
+  provisioningProfile: mac_config/embedded.provisionprofile

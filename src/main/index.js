@@ -40,9 +40,9 @@ function startDjangoServer() {
     dirName = 'serve_linux'
     basePath = path.join(process.resourcesPath, dirName);
   } else if (platform === 'darwin') {
-    executableName = 'serve_mac';
+    executableName = 'serve_mac_container';
     dirName = 'serve_mac'
-    basePath = path.join(process.resourcesPath, '..', 'Frameworks', dirName);  
+    basePath = path.join(process.resourcesPath, '..', 'backend', dirName);  
   } else {
     throw new Error(`Unsupported platform: ${platform}`);
   }
